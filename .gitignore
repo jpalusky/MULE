@@ -1,5 +1,10 @@
 .DS_Store
 
+# Eclipse stuff
+.classpath
+.project
+.settings/
+
 *.iml
 .idea/
 /out/
