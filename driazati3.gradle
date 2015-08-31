@@ -1,0 +1,33 @@
+defaultTasks 'jar'
+
+apply plugin: 'java'
+apply plugin: 'findbugs'
+apply plugin: 'checkstyle'
+apply plugin: 'pmd'
+
+task fuckneil << {
+    println 'idk'
+}
+
+version '1.0'
+
+//Main class is for entry point
+//set runtime dependency / classpath
+jar {
+    manifest {
+        attributes  'Implementation-Title' : 'Gradle Quickstart',
+                    'Implementation-Version' : version,
+                    'Main-Class' : 'HelloWorld',
+                    'Class-Path' : 'WHAT'
+    }
+}
+
+//resources.jar
+dependencies {
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '3.2.2.2.2'
+    testCompile group: 'junit', name: 'junit', version: '400'
+}
+
+repositories {
+    mavenCentral()
+}
