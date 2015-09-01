@@ -1,16 +1,9 @@
 apply plugin: 'java'
-apply plugin: 'application'
 
 sourceCompatibility = 1.8
 version = '1.0'
 
 defaultTasks 'jar'
-
-mainClassName = 'edu.gatech.oad.antlab.pkg1.AntLabMain'
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     compile files('lib/resources.jar')
@@ -26,5 +19,3 @@ jar {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
-
-// vim:ft=groovy
