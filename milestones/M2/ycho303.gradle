@@ -1,0 +1,21 @@
+defaultTasks 'jar'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+jar {
+	manifest {
+		attributes 'Implementation-Title' : 'M2',
+				   'Implementation-Version' : version,
+		           'Main-Class': 'edu.gatech.oad.antlab.pkg1.AntLabMain' 
+	}
+	from {
+		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+}
+
+dependencies {
+	compile files('lib/resources.jar')
+}
