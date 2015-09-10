@@ -1,0 +1,23 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+defaultTasks 'jar'
+
+mainClassName = 'Main'
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'MULE',
+                   'Implementation-Version': version,
+                   'Main-Class': 'Main'
+    }
+}
+
+// vim:ft=groovy
