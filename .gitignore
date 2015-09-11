@@ -8,6 +8,8 @@
 *.iml
 .idea/
 /out/
+*.iws
+*.ipr
 
 *.class
 
