@@ -10,7 +10,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-
+import javafx.scene.image.Image;
 import java.util.ArrayList;
 
 /**
@@ -24,6 +24,12 @@ public class ConfigScreen implements Screen {
     MenuListing currentListing;
     ArrayList<MenuListing> menuListings;
     int index;
+
+    Image muleL;
+    Image muleR;
+    int muleCount = 500;
+    boolean right = true;
+    int counter = 0;
 
     public ConfigScreen(Main app, Scene scene) {
         this.app = app;
@@ -76,5 +82,26 @@ public class ConfigScreen implements Screen {
         if (menuListings.get(index) == mapType) gc.setFill(Color.GREEN);
         gc.fillText(mapType.getCurrent().getText(), center, 330);
         gc.setFill(Color.BLACK);
+        muleL = new Image("file:src/main/resources//muleLeft.png");
+        muleR = new Image("file:src/main/resources//muleRight.png");
+        if(counter < 30) {
+            gc.drawImage(muleR, muleCount--, 340, 100, 100);
+            right = false;
+            System.out.println("Right");
+        }
+        else if (counter < 60) {
+            gc.drawImage(muleL, muleCount--, 340, 100, 100);
+            right = true;
+            System.out.println("Left");
+        }
+        else {
+            counter = 0;
+            gc.drawImage(muleR, muleCount--, 340, 100, 100);
+        }
+        counter++;
+        if(muleCount == 0) {
+            muleCount = 600;
+        }
     }
+
 }
