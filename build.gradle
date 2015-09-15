@@ -8,6 +8,15 @@ defaultTasks 'jar'
 
 mainClassName = 'App'
 
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/java"]
+            includes = ["**/*.fxml"]
+        }
+    }
+}
+
 repositories {
     mavenCentral()
 }
