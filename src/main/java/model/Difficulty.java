@@ -4,9 +4,9 @@ package model;
  * Model for available difficulty settings.
  */
 public enum Difficulty {
-    EASY("Easy"),
-    NORMAL("Normal"),
-    HARD("Hard");
+    BEGINNER("Beginner"),
+    STANDARD("Standard"),
+    TOURNAMENT("Tournament");
 
     private String label;
 
