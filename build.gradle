@@ -11,8 +11,7 @@ mainClassName = 'App'
 sourceSets {
     main {
         resources {
-            srcDirs = ["src/main/java"]
-            includes = ["**/*.fxml"]
+            srcDirs = ["src/main/java", "src/main/resources"]
         }
     }
 }

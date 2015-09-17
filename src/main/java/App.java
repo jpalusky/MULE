@@ -16,7 +16,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        final int scale = 15;
+        final int scale = 20;
         Parent root = FXMLLoader.load(getClass().getResource("view/ConfigScreen.fxml"));
         Scene scene = new Scene(root, 40 * scale, 24 * scale);
 
