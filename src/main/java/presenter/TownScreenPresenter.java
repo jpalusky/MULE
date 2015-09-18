@@ -15,7 +15,7 @@ public class TownScreenPresenter {
     private Image image;
 
     //constant variables
-    final static  int STEPS = 10;
+    final static int STEPS = 10;
     boolean steps = true;
 
     @FXML
@@ -30,22 +30,30 @@ public class TownScreenPresenter {
         //move up
         if (event.getCode() == KeyCode.UP) {
             switchStepsAtRight();   //temporary
-            player.setY(positionY-STEPS);
+            if(!isblocked(positionX, positionY-STEPS)) {
+                player.setY(positionY - STEPS);
+            }
         }
         //move down
         if (event.getCode() == KeyCode.DOWN) {
             switchStepsAtLeft();    //temporary
-            player.setY(positionY+STEPS);
+            if(!isblocked(positionX, positionY+STEPS)) {
+                player.setY(positionY + STEPS);
+            }
         }
         //move left
         if (event.getCode() == KeyCode.LEFT) {
             switchStepsAtLeft();    //walking left animation
-            player.setX(positionX-STEPS);
+            if(!isblocked(positionX-STEPS, positionY)) {
+                player.setX(positionX - STEPS);
+            }
         }
         //move right
         if (event.getCode() == KeyCode.RIGHT) {
             switchStepsAtRight();   //walking right animation
-            player.setX(positionX+STEPS);
+            if(!isblocked(positionX+STEPS, positionY)) {
+                player.setX(positionX + STEPS);
+            }
         }
     }
 
@@ -73,8 +81,15 @@ public class TownScreenPresenter {
         player.setImage(image);
     }
 
-    private void checkWall() {
-
+    private boolean isblocked(double x1, double y1) {
+        double x = x1 + 20;
+        double y = y1 + 40;
+        boolean blocked = false;
+        if((y>200 && ((x>0 && x<40) || (x>110 && x<180) || (x>260 && x<320) || (x> 410 && x <470)
+                || (x>560))) || y>360) {
+            blocked = true;
+        }
+        return blocked;
     }
 }
 
