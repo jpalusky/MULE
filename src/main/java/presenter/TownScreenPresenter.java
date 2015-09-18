@@ -15,9 +15,8 @@ public class TownScreenPresenter {
     private Image image;
 
     //constant variables
-    final static int STEPS = 10;
+    final static  int STEPS = 10;
     boolean steps = true;
-    final static double
 
     @FXML
     private void initialize() {
