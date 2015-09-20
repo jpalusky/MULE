@@ -1,18 +1,18 @@
-package presenter;
+package configscreen.playerselect;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import model.Color;
-import model.Player;
-import model.Race;
-import view.Validateable;
+import mule.player.Color;
+import mule.player.Player;
+import mule.player.Race;
+import presenter.Validateable;
 
 /**
  * Presenter for the PlayerSelect menu.
  */
-public class PlayerSelectPresenter implements Presenter, Validateable {
+public class PlayerSelectPresenter implements Validateable {
     @FXML private Label playerNumberLabel;
     @FXML private ChoiceBox<Race> race;
     @FXML private ChoiceBox<Color> color;

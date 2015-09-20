@@ -1,4 +1,4 @@
-package model;
+package mule;
 
 /**
  * Model for available difficulty settings.

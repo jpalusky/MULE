@@ -1,4 +1,4 @@
-package model;
+package mule.player;
 
 /**
  * Enum for the available races in the game.

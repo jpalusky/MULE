@@ -1,11 +1,12 @@
-package presenter;
+package configscreen;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import model.Difficulty;
-import model.MapType;
-import view.Validateable;
+import mule.Difficulty;
+import mule.MapType;
+import configscreen.playerselect.PlayerSelectPresenter;
+import presenter.Validateable;
 
 
 /**
@@ -13,7 +14,7 @@ import view.Validateable;
  *
  * @author Kelvin Chen
  */
-public class ConfigScreenPresenter implements Presenter, Validateable {
+public class ConfigScreenPresenter implements Validateable {
     @FXML private ChoiceBox<Difficulty> difficultyChoiceBox;
     @FXML private ChoiceBox<MapType> mapTypeChoiceBox;
 

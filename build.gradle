@@ -8,16 +8,13 @@ defaultTasks 'jar'
 
 mainClassName = 'App'
 
-sourceSets {
-    main {
-        resources {
-            srcDirs = ["src/main/java", "src/main/resources"]
-        }
-    }
-}
-
 repositories {
     mavenCentral()
+}
+
+dependencies {
+    compile 'com.airhacks:afterburner.fx:1.6.2'
+    testCompile 'junit:junit:4.12'
 }
 
 jar {

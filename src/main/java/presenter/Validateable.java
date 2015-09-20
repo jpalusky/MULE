@@ -1,4 +1,4 @@
-package view;
+package presenter;
 
 /**
  * A interface that allows you to check if a view is valid or not.

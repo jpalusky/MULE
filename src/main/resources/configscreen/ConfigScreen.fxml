@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presenter.ConfigScreenPresenter">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="configscreen.ConfigScreenPresenter">
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Game Configuration">
          <font>
@@ -29,10 +29,10 @@
          <padding>
             <Insets bottom="5.0" top="5.0" />
          </padding></Label>
-      <fx:include fx:id="player1" source="PlayerSelect.fxml" />
-      <fx:include fx:id="player2" source="PlayerSelect.fxml" />
-      <fx:include fx:id="player3" source="PlayerSelect.fxml" />
-      <fx:include fx:id="player4" source="PlayerSelect.fxml" />
+      <fx:include fx:id="player1" source="playerselect/PlayerSelect.fxml" />
+      <fx:include fx:id="player2" source="playerselect/PlayerSelect.fxml" />
+      <fx:include fx:id="player3" source="playerselect/PlayerSelect.fxml" />
+      <fx:include fx:id="player4" source="playerselect/PlayerSelect.fxml" />
       <HBox alignment="CENTER">
          <children>
             <Button fx:id="addPlayerButton" mnemonicParsing="false" onAction="#addPlayer" text="Add Player">
