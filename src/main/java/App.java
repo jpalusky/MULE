@@ -1,9 +1,9 @@
 import com.airhacks.afterburner.injection.Injector;
+import com.airhacks.afterburner.views.FXMLView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import configscreen.ConfigScreenView;
-import com.airhacks.afterburner.views.FXMLView;
+import mule.configscreen.ConfigScreenView;
 
 /**
  * This is the main application entry point for the Mule Game.
@@ -13,15 +13,6 @@ import com.airhacks.afterburner.views.FXMLView;
 public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-//        final int scale = 20;
-//        Parent root = FXMLLoader.load(getClass().getResource("view/ConfigScreen.fxml"));
-//        FXMLView startView = new ConfigScreenView();
-//
-//        Scene scene = new Scene(startView.loadFxml(), 40 * scale, 24 * scale);
-//
-//        stage.setTitle("M.U.L.E");
-//        stage.setScene(scene);
-//        stage.show();
         FXMLView startView = new ConfigScreenView();
         Scene scene = new Scene(startView.getView());
         stage.setTitle("M.U.L.E");

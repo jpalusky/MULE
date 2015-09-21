@@ -1,15 +1,15 @@
-package presenter;
+package mule.world.town;
 
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.image.Image;
 
 /**
  * Created by Chuanyui on 9/17/15.
  */
-public class TownScreenPresenter {
+public class TownPresenter {
     @FXML private ImageView player;
 
     private Image image;
@@ -59,11 +59,11 @@ public class TownScreenPresenter {
 
     private void switchStepsAtRight() {
         if(steps) {
-            image = new Image("img/human_walking_right.png");
+            image = new Image("mule/world/town/human_walking_right.png");
             steps = false;
         }
         else {
-            image = new Image("img/human_walking_right2.png");
+            image = new Image("mule/world/town/human_walking_right2.png");
             steps = true;
         }
         player.setImage(image);
@@ -71,11 +71,11 @@ public class TownScreenPresenter {
 
     private void switchStepsAtLeft() {
         if(steps) {
-            image = new Image("img/human_walking_left.png");
+            image = new Image("mule/world/town/human_walking_left.png");
             steps = false;
         }
         else {
-            image = new Image("img/human_walking_left2.png");
+            image = new Image("mule/world/town/human_walking_left2.png");
             steps = true;
         }
         player.setImage(image);

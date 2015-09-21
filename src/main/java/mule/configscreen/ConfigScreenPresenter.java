@@ -1,12 +1,15 @@
-package configscreen;
+package mule.configscreen;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.layout.VBox;
 import mule.Difficulty;
 import mule.MapType;
-import configscreen.playerselect.PlayerSelectPresenter;
-import presenter.Validateable;
+import mule.configscreen.playerselect.PlayerSelectPresenter;
+import mule.configscreen.playerselect.PlayerSelectView;
+import mvp.Presenter;
+import mvp.Validateable;
 
 
 /**
@@ -14,41 +17,37 @@ import presenter.Validateable;
  *
  * @author Kelvin Chen
  */
-public class ConfigScreenPresenter implements Validateable {
+public class ConfigScreenPresenter implements Presenter, Validateable {
     @FXML private ChoiceBox<Difficulty> difficultyChoiceBox;
     @FXML private ChoiceBox<MapType> mapTypeChoiceBox;
 
-    // JavaFX automatically appends a -Controller to the end of
-    // the name for some reason. Maybe there is a way to remove this
-    // but it is only a minor cosmetic problem.
-    @FXML private PlayerSelectPresenter player1Controller;
-    @FXML private PlayerSelectPresenter player2Controller;
-    @FXML private PlayerSelectPresenter player3Controller;
-    @FXML private PlayerSelectPresenter player4Controller;
+    @FXML private VBox playerContainer;
+
+    private PlayerSelectPresenter[] players;
 
     @FXML private Button addPlayerButton;
     @FXML private Button removePlayerButton;
 
     @FXML private Button doneButton;
 
-    private PlayerSelectPresenter[] players;
     private int numPlayers;
 
-    /**
-     * Method to run on view initialize.
-     */
-    @FXML
-    private void initialize() {
+    @Override
+    public void initialize() {
         difficultyChoiceBox.getItems().setAll(Difficulty.values());
         mapTypeChoiceBox.getItems().setAll(MapType.values());
 
         numPlayers = 2;
-        players = new PlayerSelectPresenter[] { player1Controller, player2Controller,
-                player3Controller, player4Controller };
 
+        players = new PlayerSelectPresenter[4];
         for (int i = 0; i < 4; ++i) {
-            players[i].setPlayerNumber(i + 1);
-            if (i > 1) players[i].hide();  // Only show 2 players at start.
+            PlayerSelectView playerView = new PlayerSelectView();
+            PlayerSelectPresenter player = (PlayerSelectPresenter) playerView.getPresenter();
+
+            playerContainer.getChildren().add(playerView.getView());
+            player.setPlayerNumber(i + 1);
+            if (i >= numPlayers) player.hide();
+            players[i] = player;
         }
 
         update();

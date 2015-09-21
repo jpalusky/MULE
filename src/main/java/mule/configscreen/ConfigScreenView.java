@@ -1,4 +1,4 @@
-package configscreen;
+package mule.configscreen;
 
 import com.airhacks.afterburner.views.FXMLView;
 

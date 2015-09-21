@@ -1,7 +1,7 @@
 package mule;
 
 /**
- * Model for the enumerate map types.
+ * Model for the enumerated map types.
  */
 public enum MapType {
     STANDARD("Standard"),
