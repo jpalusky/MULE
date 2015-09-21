@@ -1,15 +1,20 @@
 package mule.configscreen;
 
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.VBox;
 import mule.Difficulty;
 import mule.MapType;
+import mule.StageProvider;
 import mule.configscreen.playerselect.PlayerSelectPresenter;
 import mule.configscreen.playerselect.PlayerSelectView;
+import mule.world.town.TownView;
 import mvp.Presenter;
 import mvp.Validateable;
+
+import javax.inject.Inject;
 
 
 /**
@@ -18,6 +23,8 @@ import mvp.Validateable;
  * @author Kelvin Chen
  */
 public class ConfigScreenPresenter implements Presenter, Validateable {
+    @Inject private StageProvider stageProvider;
+
     @FXML private ChoiceBox<Difficulty> difficultyChoiceBox;
     @FXML private ChoiceBox<MapType> mapTypeChoiceBox;
 
@@ -54,13 +61,13 @@ public class ConfigScreenPresenter implements Presenter, Validateable {
     }
 
     @FXML
-    private void addPlayer() {
+    public void addPlayer() {
         if (numPlayers < 4) players[numPlayers++].show();
         update();
     }
 
     @FXML
-    private void removePlayer() {
+    public void removePlayer() {
         if (numPlayers > 2) players[--numPlayers].hide();
         update();
     }
@@ -88,7 +95,10 @@ public class ConfigScreenPresenter implements Presenter, Validateable {
     }
 
     @FXML
-    private void done() {
-        System.out.println(isValid());
+    public void done() {
+        if (isValid()) {
+            Scene scene = new Scene(new TownView().getView());
+            stageProvider.get().setScene(scene);
+        }
     }
 }
