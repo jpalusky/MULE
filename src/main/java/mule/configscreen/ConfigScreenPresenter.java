@@ -1,11 +1,20 @@
-package presenter;
+package mule.configscreen;
 
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import model.Difficulty;
-import model.MapType;
-import view.Validateable;
+import javafx.scene.layout.VBox;
+import mule.Difficulty;
+import mule.MapType;
+import mule.StageProvider;
+import mule.configscreen.playerselect.PlayerSelectPresenter;
+import mule.configscreen.playerselect.PlayerSelectView;
+import mule.world.town.TownView;
+import mvp.Presenter;
+import mvp.Validateable;
+
+import javax.inject.Inject;
 
 
 /**
@@ -14,53 +23,51 @@ import view.Validateable;
  * @author Kelvin Chen
  */
 public class ConfigScreenPresenter implements Presenter, Validateable {
+    @Inject private StageProvider stageProvider;
+
     @FXML private ChoiceBox<Difficulty> difficultyChoiceBox;
     @FXML private ChoiceBox<MapType> mapTypeChoiceBox;
 
-    // JavaFX automatically appends a -Controller to the end of
-    // the name for some reason. Maybe there is a way to remove this
-    // but it is only a minor cosmetic problem.
-    @FXML private PlayerSelectPresenter player1Controller;
-    @FXML private PlayerSelectPresenter player2Controller;
-    @FXML private PlayerSelectPresenter player3Controller;
-    @FXML private PlayerSelectPresenter player4Controller;
+    @FXML private VBox playerContainer;
+
+    private PlayerSelectPresenter[] players;
 
     @FXML private Button addPlayerButton;
     @FXML private Button removePlayerButton;
 
     @FXML private Button doneButton;
 
-    private PlayerSelectPresenter[] players;
     private int numPlayers;
 
-    /**
-     * Method to run on view initialize.
-     */
-    @FXML
-    private void initialize() {
+    @Override
+    public void initialize() {
         difficultyChoiceBox.getItems().setAll(Difficulty.values());
         mapTypeChoiceBox.getItems().setAll(MapType.values());
 
         numPlayers = 2;
-        players = new PlayerSelectPresenter[] { player1Controller, player2Controller,
-                player3Controller, player4Controller };
 
+        players = new PlayerSelectPresenter[4];
         for (int i = 0; i < 4; ++i) {
-            players[i].setPlayerNumber(i + 1);
-            if (i > 1) players[i].hide();  // Only show 2 players at start.
+            PlayerSelectView playerView = new PlayerSelectView();
+            PlayerSelectPresenter player = (PlayerSelectPresenter) playerView.getPresenter();
+
+            playerContainer.getChildren().add(playerView.getView());
+            player.setPlayerNumber(i + 1);
+            if (i >= numPlayers) player.hide();
+            players[i] = player;
         }
 
         update();
     }
 
     @FXML
-    private void addPlayer() {
+    public void addPlayer() {
         if (numPlayers < 4) players[numPlayers++].show();
         update();
     }
 
     @FXML
-    private void removePlayer() {
+    public void removePlayer() {
         if (numPlayers > 2) players[--numPlayers].hide();
         update();
     }
@@ -88,7 +95,10 @@ public class ConfigScreenPresenter implements Presenter, Validateable {
     }
 
     @FXML
-    private void done() {
-        System.out.println(isValid());
+    public void done() {
+        if (isValid()) {
+            Scene scene = new Scene(new TownView().getView());
+            stageProvider.get().setScene(scene);
+        }
     }
 }

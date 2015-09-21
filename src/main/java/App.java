@@ -1,8 +1,12 @@
+import com.airhacks.afterburner.injection.Injector;
+import com.airhacks.afterburner.views.FXMLView;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import mule.StageProvider;
+import mule.configscreen.ConfigScreenView;
+
+import javax.inject.Inject;
 
 /**
  * This is the main application entry point for the Mule Game.
@@ -10,18 +14,26 @@ import javafx.stage.Stage;
  * The game is the main project for Georgia Tech's CS 2340 course.
  */
 public class App extends Application {
+    @Inject private StageProvider stageProvider;
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        Injector.injectMembers(getClass(), this);
+        stageProvider.set(stage);
+
+        FXMLView startView = new ConfigScreenView();
+        Scene scene = new Scene(startView.getView());
+        stage.setTitle("M.U.L.E");
+        stage.setScene(scene);
+        stage.show();
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        final int scale = 20;
-        Parent root = FXMLLoader.load(getClass().getResource("view/ConfigScreen.fxml"));
-        Scene scene = new Scene(root, 40 * scale, 24 * scale);
-
-        stage.setTitle("M.U.L.E");
-        stage.setScene(scene);
-        stage.show();
+    public void stop() throws Exception {
+        Injector.forgetAll();
     }
 }

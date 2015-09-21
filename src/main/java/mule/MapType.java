@@ -1,16 +1,15 @@
-package model;
+package mule;
 
 /**
- * Model for available difficulty settings.
+ * Model for the enumerated map types.
  */
-public enum Difficulty {
-    BEGINNER("Beginner"),
+public enum MapType {
     STANDARD("Standard"),
-    TOURNAMENT("Tournament");
+    RANDOM("Random");
 
     private String label;
 
-    Difficulty(String label) {
+    MapType(String label) {
         this.label = label;
     }
 

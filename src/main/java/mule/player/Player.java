@@ -1,4 +1,4 @@
-package model;
+package mule.player;
 
 /**
  * This is the model for a Player.

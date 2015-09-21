@@ -1,13 +1,14 @@
-package presenter;
+package mule.configscreen.playerselect;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import model.Color;
-import model.Player;
-import model.Race;
-import view.Validateable;
+import mule.player.Color;
+import mule.player.Player;
+import mule.player.Race;
+import mvp.Presenter;
+import mvp.Validateable;
 
 /**
  * Presenter for the PlayerSelect menu.
@@ -18,8 +19,8 @@ public class PlayerSelectPresenter implements Presenter, Validateable {
     @FXML private ChoiceBox<Color> color;
     @FXML private TextField name;
 
-    @FXML
-    private void initialize() {
+    @Override
+    public void initialize() {
         race.getItems().setAll(Race.values());
         color.getItems().setAll(Color.values());
     }

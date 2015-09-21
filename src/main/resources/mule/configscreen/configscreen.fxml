@@ -5,15 +5,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presenter.ConfigScreenPresenter">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mule.configscreen.ConfigScreenPresenter">
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Game Configuration">
          <font>
             <Font size="26.0" />
          </font>
-         <VBox.margin>
-            <Insets bottom="10.0" />
-         </VBox.margin>
       </Text>
       <Label contentDisplay="BOTTOM" text="Difficulty">
          <graphic>
@@ -21,18 +18,17 @@
          </graphic>
          <padding>
             <Insets bottom="5.0" />
-         </padding></Label>
+         </padding>
+      </Label>
       <Label contentDisplay="BOTTOM" text="Map Type">
          <graphic>
             <ChoiceBox id="mapTypeChoiceBox" fx:id="mapTypeChoiceBox" prefWidth="150.0" />
          </graphic>
          <padding>
             <Insets bottom="5.0" top="5.0" />
-         </padding></Label>
-      <fx:include fx:id="player1" source="PlayerSelect.fxml" />
-      <fx:include fx:id="player2" source="PlayerSelect.fxml" />
-      <fx:include fx:id="player3" source="PlayerSelect.fxml" />
-      <fx:include fx:id="player4" source="PlayerSelect.fxml" />
+         </padding>
+      </Label>
+      <VBox fx:id="playerContainer" alignment="CENTER" />
       <HBox alignment="CENTER">
          <children>
             <Button fx:id="addPlayerButton" mnemonicParsing="false" onAction="#addPlayer" text="Add Player">
@@ -50,11 +46,7 @@
             <Insets bottom="5.0" top="5.0" />
          </padding>
       </HBox>
-      <Button fx:id="doneButton" mnemonicParsing="false" onAction="#done" text="Done">
-         <VBox.margin>
-            <Insets bottom="5.0" top="5.0" />
-         </VBox.margin>
-      </Button>
+      <Button fx:id="doneButton" mnemonicParsing="false" onAction="#done" text="Done" />
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
