@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import mule.StageProvider;
 import mule.configscreen.ConfigScreenView;
+import mule.mainscreen.MainScreenView;
 
 import javax.inject.Inject;
 
@@ -21,7 +22,10 @@ public class App extends Application {
         Injector.injectMembers(getClass(), this);
         stageProvider.set(stage);
 
-        FXMLView startView = new ConfigScreenView();
+//        FXMLView startView = new ConfigScreenView();
+        // TEMPORARY for development purposes.
+        // TODO: use env vars to skip config.
+        FXMLView startView = new MainScreenView();
         Scene scene = new Scene(startView.getView());
         stage.setTitle("M.U.L.E");
         stage.setScene(scene);

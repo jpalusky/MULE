@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mule.mainscreen.MainScreenPresenter">
+   <children>
+      <Pane fx:id="mainContainer" prefHeight="500.0" prefWidth="900.0" />
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: pink;">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Menu/other stuff placeholder" textAlignment="CENTER">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+         </children></HBox>
+   </children>
+</VBox>

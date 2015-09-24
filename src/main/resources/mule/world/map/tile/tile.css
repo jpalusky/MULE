@@ -1,0 +1,40 @@
+.tile {
+    -fx-border-color: rgba(0, 0, 0, 0.125);
+    -fx-border-width: 1px;
+}
+
+.tile:hover {
+    -fx-opacity: 0.75;
+}
+
+.river {
+    -fx-background-color: #00f;
+    -fx-background-size: cover;
+    -fx-background-image: url("water.gif");
+}
+
+.plain, .mountain1, .mountain2, .mountain3, .town {
+    -fx-background-color: sandybrown;
+    -fx-background-size: cover;
+    -fx-background-image: url("plain.gif");
+}
+
+.mountain1 {
+    -fx-background-image: url("plain.gif"), url("mountain1.png");
+}
+
+.mountain2 {
+    -fx-background-image: url("plain.gif"), url("mountain2.png");
+}
+
+.mountain3 {
+    -fx-background-image: url("plain.gif"), url("mountain3.png");
+}
+
+.town {
+    -fx-background-image: url("plain.gif"), url("town.png");
+}
+
+.owner-circle {
+    -fx-fill: red;
+}

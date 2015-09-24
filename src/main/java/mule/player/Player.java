@@ -4,9 +4,9 @@ package mule.player;
  * This is the model for a Player.
  */
 public class Player {
-    private String name;
-    private Color color;
-    private Race race;
+    private final String name;
+    private final Color color;
+    private final Race race;
 
     private int money;
 

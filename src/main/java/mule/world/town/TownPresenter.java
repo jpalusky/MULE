@@ -5,11 +5,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import mvp.Presenter;
 
 /**
  * Created by Chuanyui on 9/17/15.
  */
-public class TownPresenter {
+public class TownPresenter implements Presenter {
     @FXML private ImageView player;
 
     private Image image;
@@ -18,8 +19,8 @@ public class TownPresenter {
     final static int STEPS = 10;
     boolean steps = true;
 
-    @FXML
-    private void initialize() {
+    @Override
+    public void initialize() {
         player.setFocusTraversable(true);
     }
 

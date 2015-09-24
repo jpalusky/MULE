@@ -10,7 +10,7 @@ import mule.MapType;
 import mule.StageProvider;
 import mule.configscreen.playerselect.PlayerSelectPresenter;
 import mule.configscreen.playerselect.PlayerSelectView;
-import mule.world.town.TownView;
+import mule.mainscreen.MainScreenView;
 import mvp.Presenter;
 import mvp.Validateable;
 
@@ -97,7 +97,7 @@ public class ConfigScreenPresenter implements Presenter, Validateable {
     @FXML
     public void done() {
         if (isValid()) {
-            Scene scene = new Scene(new TownView().getView());
+            Scene scene = new Scene(new MainScreenView().getView());
             stageProvider.get().setScene(scene);
         }
     }
