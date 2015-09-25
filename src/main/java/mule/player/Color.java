@@ -21,6 +21,10 @@ public enum Color {
         this.color = color;
     }
 
+    public javafx.scene.paint.Color getColor() {
+        return color;
+    }
+
     @Override
     public String toString() {
         return label;
