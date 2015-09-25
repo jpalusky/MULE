@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mule.mainscreen.statusbar.StatusBarPresenter">
+   <children>
+      <Label contentDisplay="BOTTOM" text="Current Player:">
+         <graphic>
+            <Text fx:id="currentPlayer" strokeType="OUTSIDE" strokeWidth="0.0" text="Placeholder" />
+         </graphic>
+         <HBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </HBox.margin>
+      </Label>
+      <Label contentDisplay="BOTTOM" text="Current round:">
+         <graphic>
+            <Text fx:id="currentRound" strokeType="OUTSIDE" strokeWidth="0.0" text="Placeholder" />
+         </graphic>
+         <HBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </HBox.margin>
+      </Label>
+   </children>
+   <padding>
+      <Insets left="10.0" right="10.0" />
+   </padding>
+</HBox>

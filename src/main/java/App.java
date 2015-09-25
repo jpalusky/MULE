@@ -22,10 +22,10 @@ public class App extends Application {
         Injector.injectMembers(getClass(), this);
         stageProvider.set(stage);
 
-//        FXMLView startView = new ConfigScreenView();
+        FXMLView startView = new ConfigScreenView();
         // TEMPORARY for development purposes.
         // TODO: use env vars to skip config.
-        FXMLView startView = new MainScreenView();
+//        FXMLView startView = new MainScreenView();
         Scene scene = new Scene(startView.getView());
         stage.setTitle("M.U.L.E");
         stage.setScene(scene);
