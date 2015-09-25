@@ -21,6 +21,7 @@ public class GameState {
 
     private StringProperty currentPlayerProp;
     private IntegerProperty currentRoundProp;
+    private IntegerProperty currentPlayerMoneyProp;
 
     private boolean inSelectionPhase;
 
@@ -38,6 +39,7 @@ public class GameState {
         inSelectionPhase = true;
         currentPlayerProp = new SimpleStringProperty();
         currentRoundProp = new SimpleIntegerProperty();
+        currentPlayerMoneyProp = new SimpleIntegerProperty();
         updateProps();
     }
 
@@ -47,6 +49,7 @@ public class GameState {
     private void updateProps() {
         currentPlayerProp.setValue(getCurrentPlayer().getName());
         currentRoundProp.setValue(getRound());
+        currentPlayerMoneyProp.setValue(getCurrentPlayer().getMoney());
     }
 
     public Player[] getPlayers() {
@@ -65,12 +68,17 @@ public class GameState {
         return currentPlayerProp;
     }
 
+
     public int getRound() {
         return counter / players.length;
     }
 
     public IntegerProperty getCurrentRoundProp() {
         return currentRoundProp;
+    }
+
+    public IntegerProperty getCurrentPlayerMoneyProp() {
+        return currentPlayerMoneyProp;
     }
 
     public void incCounter() {

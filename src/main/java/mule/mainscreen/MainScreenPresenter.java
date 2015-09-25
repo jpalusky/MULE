@@ -3,7 +3,6 @@ package mule.mainscreen;
 import com.airhacks.afterburner.views.FXMLView;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import mule.GameState;
 import mule.world.map.MapView;

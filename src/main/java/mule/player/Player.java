@@ -20,8 +20,12 @@ public class Player {
         money = race.getStartingMoney();
     }
 
-    public void setMoney(int money) {
-        this.money = money;
+    public int getMoney() {
+        return money;
+    }
+
+    public void debitMoney(int amount) {
+        money -= amount;
     }
 
     public Color getColor() {

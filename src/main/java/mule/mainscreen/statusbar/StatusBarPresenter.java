@@ -14,11 +14,14 @@ public class StatusBarPresenter implements Presenter {
 
     @FXML private Text currentPlayer;
     @FXML private Text currentRound;
+    @FXML private Text playerMoney;
 
     @Override
     public void initialize() {
         currentPlayer.textProperty().bind(gameState.getCurrentPlayerProp());
         Bindings.bindBidirectional(currentRound.textProperty(),
                 gameState.getCurrentRoundProp(), new NumberStringConverter());
+        Bindings.bindBidirectional(playerMoney.textProperty(),
+                gameState.getCurrentPlayerMoneyProp(), new NumberStringConverter());
     }
 }

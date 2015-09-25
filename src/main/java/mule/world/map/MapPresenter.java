@@ -83,9 +83,13 @@ public class MapPresenter implements Presenter {
     private void handleLandSelection(TileView tile) {
         if (!gameState.getInSelectionPhase()) return;
 
+        Player p = gameState.getCurrentPlayer();
         boolean isFree = gameState.getRound() < 2;
 
-        if (tile.getPresenter().setOwner(gameState.getCurrentPlayer())) {
+        if (tile.getPresenter().setOwner(p)) {
+            if (!isFree) {
+                p.debitMoney(150);  // TODO: change property cost.
+            }
             gameState.incCounter();
         }
     }
