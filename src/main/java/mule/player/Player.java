@@ -50,23 +50,8 @@ public class Player {
         money = Math.max(0, money - amount);
     }
 
-    /**
-     * The player buys the specified property.
-     *
-     * @param property the property to buy.
-     * @return whether or not the property was bought.
-     */
-    public boolean buyProperty(Tile property) {
-        if (property.isOwned()) return false;
-        if (property.getCost() > money) return false;
-
-        property.setOwner(this);
-        properties.add(property);
-
-        if (gameState.getRound() >= 2)  // Properties are free until after 2nd round.
-            debitMoney(property.getCost());
-
-        return true;
+    public Set<Tile> getProperties() {
+        return properties;
     }
 
     public Color getColor() {

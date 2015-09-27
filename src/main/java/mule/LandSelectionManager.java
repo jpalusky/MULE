@@ -1,5 +1,6 @@
 package mule;
 
+import javafx.beans.property.*;
 import javafx.scene.input.KeyCode;
 import mule.player.Player;
 import mule.world.map.tile.Tile;
@@ -20,40 +21,73 @@ public class LandSelectionManager {
     @Inject private GameState gameState;
     @Inject private KeyHandler keyHandler;
 
-    private boolean inLandSelectionPhase;
+    private BooleanProperty inLandSelectionPhase;
+    private ObjectProperty<Player> currentPlayer;
+    private IntegerProperty currentRound;
+
     private int counter;
-    private Player[] players;
     private int numPassed;
 
     public LandSelectionManager() {
-        inLandSelectionPhase = true;
+        inLandSelectionPhase = new SimpleBooleanProperty(true);
+        currentPlayer = new SimpleObjectProperty<>();
+        currentRound = new SimpleIntegerProperty();
     }
 
     @PostConstruct
     private void init() {
-        players = gameState.getPlayers();
         keyHandler.bind(KeyCode.P, e -> playerPass());
+        currentPlayer.set(getCurrentPlayer());
     }
 
     public void manage(Tile tile) {
-        if (!inLandSelectionPhase) return;
+        if (!inLandSelectionPhase.get()) return;
+        if (tile.isOwned()) return;
 
-        if (getCurrentPlayer().buyProperty(tile))
+        Player player = getCurrentPlayer();
+
+        if (isFree() || tile.getCost() <= player.getMoney()) {
+            tile.setOwner(player);
+            player.getProperties().add(tile);
+            if (!isFree()) player.debitMoney(tile.getCost());
             nextPlayer();
+        }
+    }
+
+    public BooleanProperty getInLandSelectionPhaseProp() {
+        return inLandSelectionPhase;
+    }
+
+    public ObjectProperty<Player> getCurrentPlayerProp() {
+        return currentPlayer;
+    }
+
+    public IntegerProperty getCurrentRoundProp() {
+        return currentRound;
+    }
+
+    public boolean isFree() {
+        return getRound() < 2;
+    }
+
+    private int getRound() {
+        return counter / gameState.getNumPlayers();
     }
 
     private Player getCurrentPlayer() {
-        return players[counter % players.length];
+        return gameState.getPlayers()[counter % gameState.getNumPlayers()];
     }
 
     private void nextPlayer() {
         ++counter;
-        if (counter % players.length == 0) numPassed = 0;
+        if (counter % gameState.getPlayers().length == 0) numPassed = 0;
+        currentPlayer.set(getCurrentPlayer());
+        currentRound.set(getRound());
     }
 
     private void playerPass() {
-        if (++numPassed == players.length) {
-            inLandSelectionPhase = false;
+        if (++numPassed == gameState.getNumPlayers()) {
+            inLandSelectionPhase.set(false);
             keyHandler.unbind(KeyCode.P);
         }
         nextPlayer();

@@ -1,7 +1,6 @@
 package mule.mainscreen;
 
 import com.airhacks.afterburner.views.FXMLView;
-import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import mule.GameState;
@@ -27,14 +26,5 @@ public class MainScreenPresenter implements Presenter {
         mainContainerProvider.set(mainContainer);
         FXMLView defaultView = new MapView();
         mainContainer.getChildren().add(0, defaultView.getView());
-
-        AnimationTimer gameLoop = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (gameState.getInSelectionPhase()) return;
-                // not sure if I need a game loop...
-            }
-        };
-        gameLoop.start();
     }
 }
