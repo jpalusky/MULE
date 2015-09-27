@@ -1,55 +1,45 @@
 package mule.world.map.tile;
 
 import javafx.fxml.FXML;
-import javafx.scene.layout.Pane;
+import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import mule.GameState;
 import mule.player.Player;
 import mvp.Presenter;
+
+import javax.inject.Inject;
 
 
 /**
  * A tileType in the map grid.
  */
 public class TilePresenter implements Presenter {
-    @FXML private Pane root;
-    @FXML private Circle ownerCircle;
-    @FXML private Circle playerCircle;
+    @Inject private GameState gameState;
+    @Inject private Tile tile;
 
-    private TileType tileType;
-    private Player owner;
+    @FXML private Parent root;
+    @FXML private Circle ownerCircle;
 
     @Override
     public void initialize() {
+        root.getStyleClass().add(tile.getTileType().getCssClass());
+
+        tile.getOwnerProp().addListener((obs, oldOwner, owner) -> {
+            ownerCircle.setFill(owner.getColor().getColor());
+        });
     }
 
-    public void setTileType(TileType tileType) {
-        this.tileType = tileType;
+    public void onClick() {
+        System.out.println(gameState);
+        handleLandSelection();
     }
 
-    /**
-     * Sets the owner of the tile. If there is already an owner, return false.
-     *
-     * @param player the owner to set.
-     * @return whether or not the owner has changed.
-     */
-    public boolean setOwner(Player player) {
-        if (owner != null) return false;
-        owner = player;
-        ownerCircle.setFill(player.getColor().getColor());
-        return true;
-    }
+    private void handleLandSelection() {
+        if (!gameState.getInSelectionPhase()) return;
 
-    public Pane getRoot() {
-        return root;
-    }
-
-    public void addPlayer(Player player) {
-        playerCircle.setFill(player.getColor().getColor());
-    }
-
-    public void removePlayer() {
-        playerCircle.setFill(Color.TRANSPARENT);
+        if (gameState.getCurrentPlayer().buyProperty(tile))
+            gameState.incCounter();
     }
 }
 
