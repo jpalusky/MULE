@@ -2,11 +2,13 @@ package mule.mainscreen.statusbar;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 import mule.GameState;
 import mule.LandSelectionManager;
+import mule.mainscreen.statusbar.playerstatus.PlayerStatusView;
 import mule.player.Player;
 import mvp.Presenter;
 
@@ -21,11 +23,13 @@ public class StatusBarPresenter implements Presenter {
     @FXML private Text lsCurrentPlayer;
     @FXML private Text lsCurrentRound;
 
+    @FXML private Pane playerStats;
+
     @Override
     public void initialize() {
         lsBox.visibleProperty().bind(lsMan.getInLandSelectionPhaseProp());
         lsBox.managedProperty().bind(lsMan.getInLandSelectionPhaseProp());
-        lsCurrentPlayer.textProperty().bindBidirectional( lsMan.getCurrentPlayerProp(),
+        lsCurrentPlayer.textProperty().bindBidirectional(lsMan.getCurrentPlayerProp(),
                 new StringConverter<Player>() {
                     @Override
                     public String toString(Player player) {
@@ -38,5 +42,10 @@ public class StatusBarPresenter implements Presenter {
                 });
         lsCurrentRound.textProperty().bindBidirectional(lsMan.getCurrentRoundProp(),
                 new NumberStringConverter());
+
+        for (Player player : gameState.getPlayers()) {
+            PlayerStatusView playerStatView = new PlayerStatusView(p -> player);
+            playerStatView.getViewAsync(playerStats.getChildren()::add);
+        }
     }
 }

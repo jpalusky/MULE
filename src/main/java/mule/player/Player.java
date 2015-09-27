@@ -1,6 +1,10 @@
 package mule.player;
 
 import com.airhacks.afterburner.injection.Injector;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import mule.GameState;
 import mule.world.map.Point;
 import mule.world.map.tile.Tile;
@@ -15,26 +19,35 @@ import java.util.Set;
 public class Player {
     @Inject private GameState gameState;
 
-    private final String name;
+    private final StringProperty name;
     private final Color color;
     private final Race race;
 
     private Point location;
-    private int money;
+    private IntegerProperty money;
 
     private final Set<Tile> properties;
 
+    // Empty constructor for the injector.
+    public Player() {
+        this(null, Color.BLUE, Race.HUMAN);
+    }
+
     public Player(String name, Color color, Race race) {
-        this.name = name;
+        this.name = new SimpleStringProperty(name);
         this.color = color;
         this.race = race;
-        money = race.getStartingMoney();
+        money = new SimpleIntegerProperty(race.getStartingMoney());
         location = new Point();
         properties = new HashSet<>();
         Injector.injectMembers(getClass(), this);
     }
 
     public int getMoney() {
+        return money.get();
+    }
+
+    public IntegerProperty getMoneyProp() {
         return money;
     }
 
@@ -47,7 +60,7 @@ public class Player {
      * @param amount the amount of money to debit.
      */
     public void debitMoney(int amount) {
-        money = Math.max(0, money - amount);
+        money.set(Math.max(0, getMoney() - amount));
     }
 
     public Set<Tile> getProperties() {
@@ -59,6 +72,10 @@ public class Player {
     }
 
     public String getName() {
+        return name.get();
+    }
+
+    public StringProperty getNameProp() {
         return name;
     }
 

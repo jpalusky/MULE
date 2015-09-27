@@ -1,9 +1,7 @@
 package mule.world.map.tile;
 
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SetProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleSetProperty;
 import mule.player.Player;
 
 /**

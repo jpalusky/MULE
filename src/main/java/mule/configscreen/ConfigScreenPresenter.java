@@ -6,7 +6,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.VBox;
-import mule.*;
+import javafx.stage.Stage;
+import mule.Difficulty;
+import mule.GameState;
+import mule.KeyHandler;
+import mule.MapType;
 import mule.configscreen.playerselect.PlayerSelectPresenter;
 import mule.configscreen.playerselect.PlayerSelectView;
 import mule.mainscreen.MainScreenView;
@@ -23,7 +27,7 @@ import javax.inject.Inject;
  * @author Kelvin Chen
  */
 public class ConfigScreenPresenter implements Presenter, Validateable {
-    @Inject private StageProvider stageProvider;
+    @Inject private Stage primaryStage;
     @Inject private GameState gameState;
     @Inject private KeyHandler keyHandler;
 
@@ -103,12 +107,14 @@ public class ConfigScreenPresenter implements Presenter, Validateable {
             for (int i = 0; i < numPlayers; ++i) {
                 ps[i] = players[i].getPlayer();
             }
+
             gameState.configure(ps, difficultyChoiceBox.getValue(), mapTypeChoiceBox.getValue());
 
-            Scene scene = new Scene(new MainScreenView().getView());
-            scene.addEventHandler(EventType.ROOT, keyHandler::handle);
-
-            stageProvider.get().setScene(scene);
+            new MainScreenView().getViewAsync(view -> {
+                Scene scene = new Scene(view);
+                scene.addEventHandler(EventType.ROOT, keyHandler::handle);
+                primaryStage.setScene(scene);
+            });
         }
     }
 }
