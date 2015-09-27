@@ -2,10 +2,9 @@ package mule.world.map.tile;
 
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import mule.GameState;
-import mule.player.Player;
+import mule.LandSelectionManager;
 import mvp.Presenter;
 
 import javax.inject.Inject;
@@ -17,6 +16,7 @@ import javax.inject.Inject;
 public class TilePresenter implements Presenter {
     @Inject private GameState gameState;
     @Inject private Tile tile;
+    @Inject private LandSelectionManager lsMan;
 
     @FXML private Parent root;
     @FXML private Circle ownerCircle;
@@ -31,15 +31,7 @@ public class TilePresenter implements Presenter {
     }
 
     public void onClick() {
-        System.out.println(gameState);
-        handleLandSelection();
-    }
-
-    private void handleLandSelection() {
-        if (!gameState.getInSelectionPhase()) return;
-
-        if (gameState.getCurrentPlayer().buyProperty(tile))
-            gameState.incCounter();
+        lsMan.manage(tile);
     }
 }
 
