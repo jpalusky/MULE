@@ -3,11 +3,9 @@ import com.airhacks.afterburner.views.FXMLView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import mule.StageProvider;
 import mule.configscreen.ConfigScreenView;
-import mule.mainscreen.MainScreenView;
 
-import javax.inject.Inject;
+import java.util.HashMap;
 
 /**
  * This is the main application entry point for the Mule Game.
@@ -15,21 +13,21 @@ import javax.inject.Inject;
  * The game is the main project for Georgia Tech's CS 2340 course.
  */
 public class App extends Application {
-    @Inject private StageProvider stageProvider;
-
     @Override
     public void start(Stage stage) throws Exception {
-        Injector.injectMembers(getClass(), this);
-        stageProvider.set(stage);
+        HashMap<Class, Object> context = new HashMap<>();
+        context.put(stage.getClass(), stage);
+
+        Injector.setModelOrService(stage.getClass(), stage);
+
+        stage.setTitle("M.U.L.E");
+        stage.show();
 
         FXMLView startView = new ConfigScreenView();
-        // TEMPORARY for development purposes.
-        // TODO: use env vars to skip config.
-//        FXMLView startView = new MainScreenView();
-        Scene scene = new Scene(startView.getView());
-        stage.setTitle("M.U.L.E");
-        stage.setScene(scene);
-        stage.show();
+        startView.getViewAsync(view -> {
+            Scene scene = new Scene(view);
+            stage.setScene(scene);
+        });
     }
 
     public static void main(String[] args) {

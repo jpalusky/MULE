@@ -1,10 +1,9 @@
 package mule.mainscreen;
 
-import com.airhacks.afterburner.views.FXMLView;
-import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
-import mule.GameState;
+import mule.LandSelectionManager;
+import mule.TurnManager;
 import mule.world.map.MapView;
 import mvp.Presenter;
 
@@ -17,24 +16,17 @@ import javax.inject.Inject;
  * screen should be a part of the MainScreen.
  */
 public class MainScreenPresenter implements Presenter {
-    @Inject private MainContainerProvider mainContainerProvider;
-    @Inject private GameState gameState;
+    @Inject private LandSelectionManager landSelectionManager;
+    @Inject private TurnManager turnManager;
 
     @FXML private Pane mainContainer;
 
     @Override
     public void initialize() {
-        mainContainerProvider.set(mainContainer);
-        FXMLView defaultView = new MapView();
-        mainContainer.getChildren().add(0, defaultView.getView());
+        new MapView().getViewAsync(view -> mainContainer.getChildren().add(view));
 
-        AnimationTimer gameLoop = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (gameState.getInSelectionPhase()) return;
-                // not sure if I need a game loop...
-            }
-        };
-        gameLoop.start();
+        landSelectionManager.getInLandSelectionPhaseProp().addListener((obs, old, newValue) -> {
+            if (!newValue) turnManager.start();
+        });
     }
 }

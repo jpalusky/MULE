@@ -27,6 +27,10 @@ public enum TileType {
         return label;
     }
 
+    public String getCssClass() {
+        return name().toLowerCase();
+    }
+
     public int getFoodProduction() {
         return food;
     }

@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
-
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mule.mainscreen.statusbar.StatusBarPresenter">
    <children>
-      <Label contentDisplay="BOTTOM" text="Current Player:">
-         <graphic>
-            <Text fx:id="currentPlayer" strokeType="OUTSIDE" strokeWidth="0.0" text="Placeholder" />
-         </graphic>
-         <HBox.margin>
-            <Insets left="5.0" right="5.0" />
-         </HBox.margin>
-      </Label>
-      <Label contentDisplay="BOTTOM" text="Current round:">
-         <graphic>
-            <Text fx:id="currentRound" strokeType="OUTSIDE" strokeWidth="0.0" text="Placeholder" />
-         </graphic>
-         <HBox.margin>
-            <Insets left="5.0" right="5.0" />
-         </HBox.margin>
-      </Label>
-      <Label contentDisplay="BOTTOM" text="Money:">
-         <graphic>
-            <Text fx:id="playerMoney" strokeType="OUTSIDE" strokeWidth="0.0" text="Placeholder" />
-         </graphic>
-      </Label>
+      <HBox fx:id="playerStats" prefHeight="100.0" />
+      <FlowPane fx:id="lsBox" alignment="CENTER" columnHalignment="RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefWidth="200.0">
+         <children>
+            <Label text="Land Selection Phase" textAlignment="CENTER">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label contentDisplay="BOTTOM" text="Current Player:">
+               <graphic>
+                  <Text fx:id="lsCurrentPlayer" strokeType="OUTSIDE" strokeWidth="0.0" text="Placeholder" />
+               </graphic>
+               <FlowPane.margin>
+                  <Insets left="5.0" right="5.0" />
+               </FlowPane.margin>
+            </Label>
+            <Label contentDisplay="BOTTOM" text="Current round:">
+               <graphic>
+                  <Text fx:id="lsCurrentRound" strokeType="OUTSIDE" strokeWidth="0.0" text="Placeholder" />
+               </graphic>
+               <FlowPane.margin>
+                  <Insets left="5.0" right="5.0" />
+               </FlowPane.margin>
+            </Label>
+         </children>
+      </FlowPane>
    </children>
-   <padding>
-      <Insets left="10.0" right="10.0" />
-   </padding>
 </HBox>

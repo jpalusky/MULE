@@ -1,10 +1,7 @@
 package mule;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import mule.player.Player;
+import mule.world.map.MapType;
 
 import java.util.Arrays;
 
@@ -15,41 +12,16 @@ public class GameState {
     private Difficulty difficulty;
     private MapType mapType;
 
-    /** A counter that gets incremented every time the player switches. */
-    private int counter;
     private Player[] players;
 
-    private StringProperty currentPlayerProp;
-    private IntegerProperty currentRoundProp;
-    private IntegerProperty currentPlayerMoneyProp;
+    // Empty constructor for injector.
+    public GameState() {
+    }
 
-    private boolean inSelectionPhase;
-
-    /**
-     * The number of player that has passed the last round.
-     * This is kept tracked of because if all players in a
-     * round has passed, then the land selection phase ends.
-     */
-    private int numPassed;
-
-    public void configure(Player[] players, Difficulty difficulty, MapType mapType) {
+    public GameState(Player[] players, Difficulty difficulty, MapType mapType) {
         this.players = players;
         this.mapType = mapType;
         this.difficulty = difficulty;
-        inSelectionPhase = true;
-        currentPlayerProp = new SimpleStringProperty();
-        currentRoundProp = new SimpleIntegerProperty();
-        currentPlayerMoneyProp = new SimpleIntegerProperty();
-        updateProps();
-    }
-
-    /**
-     * Update all Properties based on game state.
-     */
-    private void updateProps() {
-        currentPlayerProp.setValue(getCurrentPlayer().getName());
-        currentRoundProp.setValue(getRound());
-        currentPlayerMoneyProp.setValue(getCurrentPlayer().getMoney());
     }
 
     public Player[] getPlayers() {
@@ -58,49 +30,6 @@ public class GameState {
 
     public int getNumPlayers() {
         return players.length;
-    }
-
-    public Player getCurrentPlayer() {
-        return players[counter % players.length];
-    }
-
-    public StringProperty getCurrentPlayerProp() {
-        return currentPlayerProp;
-    }
-
-
-    public int getRound() {
-        return counter / players.length;
-    }
-
-    public IntegerProperty getCurrentRoundProp() {
-        return currentRoundProp;
-    }
-
-    public IntegerProperty getCurrentPlayerMoneyProp() {
-        return currentPlayerMoneyProp;
-    }
-
-    public void incCounter() {
-        ++counter;
-        if (counter % players.length == 0) numPassed = 0;
-        updateProps();
-    }
-
-    public void incNumPassed() {
-        ++numPassed;
-    }
-
-    public int getNumPassed() {
-        return numPassed;
-    }
-
-    public boolean getInSelectionPhase() {
-        return inSelectionPhase;
-    }
-
-    public void setInSelectionPhase(boolean value) {
-        inSelectionPhase = value;
     }
 
     @Override

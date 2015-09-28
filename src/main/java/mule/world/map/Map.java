@@ -1,7 +1,7 @@
 package mule.world.map;
 
+import mule.world.map.tile.Tile;
 import mule.world.map.tile.TileType;
-import mule.world.map.tile.TileView;
 
 /**
  * The world map.
@@ -9,26 +9,46 @@ import mule.world.map.tile.TileView;
  * Coordinates start with (0, 0) in the top left corner.
  */
 public class Map {
+    private Tile[][] tiles;
     private boolean initialized;
-    private TileView[][] tiles;
 
-    public void initializeMap(TileType[][] map) {
-        if (initialized) return;
-        tiles = new TileView[5][9];
-        for (int x = 0; x < 9; ++x) {
-            for (int y = 0; y < 5; ++y) {
-                TileView tile = new TileView(map[y][x]);
-                tiles[y][x] = tile;
+    public void initialize(TileType[][] map) {
+        if (!initialized) {
+            tiles = new Tile[map.length][map[0].length];
+            for (int i = 0; i < map.length; ++i) {
+                for (int j = 0; j < map[i].length; ++j) {
+                    tiles[i][j] = new Tile(map[i][j]);
+                }
             }
+            initialized = true;
         }
-        initialized = true;
     }
 
-    public TileView[][] getTiles() {
-        return tiles;
+    public Tile getTile(Point p) {
+        return getTile(p.x, p.y);
     }
 
-    public TileView getTile(int x, int y) {
-        return  tiles[y][x];
+    public Tile getTile(int x, int y) {
+        return tiles[y][x];
+    }
+
+    public static TileType[][] getStandardMap() {
+        TileType R = TileType.RIVER;
+        TileType P = TileType.PLAIN;
+        TileType M1 = TileType.MOUNTAIN1;
+        TileType M2 = TileType.MOUNTAIN2;
+        TileType M3 = TileType.MOUNTAIN3;
+        return new TileType[][] {
+                {P, P, M1, P, R, P, M3, P, P},
+                {P, M1, P, P, R, P, P, P, M3},
+                {M3, P, P, P, TileType.TOWN, P, P, P, M1},
+                {P, M2, P, P, R, P, M2, P, P},
+                {P, P, M2, P, R, P, P, P, M2}
+        };
+    }
+
+    public static TileType[][] getRandomMap() {
+        // TODO: implement this.
+        return getStandardMap();
     }
 }

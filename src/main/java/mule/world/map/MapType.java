@@ -1,4 +1,4 @@
-package mule;
+package mule.world.map;
 
 /**
  * Model for the enumerated map types.

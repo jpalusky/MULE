@@ -1,12 +1,17 @@
 package mule.configscreen;
 
+import com.airhacks.afterburner.injection.Injector;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.VBox;
-import mule.*;
+import javafx.stage.Stage;
+import mule.Difficulty;
+import mule.GameState;
+import mule.KeyHandler;
+import mule.world.map.MapType;
 import mule.configscreen.playerselect.PlayerSelectPresenter;
 import mule.configscreen.playerselect.PlayerSelectView;
 import mule.mainscreen.MainScreenView;
@@ -23,8 +28,7 @@ import javax.inject.Inject;
  * @author Kelvin Chen
  */
 public class ConfigScreenPresenter implements Presenter, Validateable {
-    @Inject private StageProvider stageProvider;
-    @Inject private GameState gameState;
+    @Inject private Stage primaryStage;
     @Inject private KeyHandler keyHandler;
 
     @FXML private ChoiceBox<Difficulty> difficultyChoiceBox;
@@ -103,12 +107,16 @@ public class ConfigScreenPresenter implements Presenter, Validateable {
             for (int i = 0; i < numPlayers; ++i) {
                 ps[i] = players[i].getPlayer();
             }
-            gameState.configure(ps, difficultyChoiceBox.getValue(), mapTypeChoiceBox.getValue());
 
-            Scene scene = new Scene(new MainScreenView().getView());
-            scene.addEventHandler(EventType.ROOT, keyHandler::handle);
+            GameState gameState = new GameState(ps,
+                    difficultyChoiceBox.getValue(), mapTypeChoiceBox.getValue());
+            Injector.setModelOrService(gameState.getClass(), gameState);
 
-            stageProvider.get().setScene(scene);
+            new MainScreenView().getViewAsync(view -> {
+                Scene scene = new Scene(view);
+                scene.addEventHandler(EventType.ROOT, keyHandler::handle);
+                primaryStage.setScene(scene);
+            });
         }
     }
 }
