@@ -2,9 +2,7 @@ package mule.world.map;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
-import mule.GameState;
-import mule.KeyHandler;
-import mule.mainscreen.MainContainerProvider;
+import mule.TurnManager;
 import mule.world.map.tile.Tile;
 import mule.world.map.tile.TileType;
 import mule.world.map.tile.TileView;
@@ -19,10 +17,8 @@ import java.util.HashMap;
  * The map coordinates start at (0, 0) at the top left corner.
  */
 public class MapPresenter implements Presenter {
-    @Inject private GameState gameState;
-    @Inject private KeyHandler keyHandler;
-    @Inject private MainContainerProvider mainContainerProvider;
     @Inject private Map map;
+    @Inject private TurnManager turnManager;
 
     @FXML private GridPane grid;
 

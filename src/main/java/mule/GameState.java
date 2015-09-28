@@ -1,6 +1,7 @@
 package mule;
 
 import mule.player.Player;
+import mule.world.map.MapType;
 
 import java.util.Arrays;
 
@@ -13,7 +14,11 @@ public class GameState {
 
     private Player[] players;
 
-    public void configure(Player[] players, Difficulty difficulty, MapType mapType) {
+    // Empty constructor for injector.
+    public GameState() {
+    }
+
+    public GameState(Player[] players, Difficulty difficulty, MapType mapType) {
         this.players = players;
         this.mapType = mapType;
         this.difficulty = difficulty;

@@ -48,7 +48,7 @@ public class LandSelectionManager {
 
         if (isFree() || tile.getCost() <= player.getMoney()) {
             tile.setOwner(player);
-            player.getProperties().add(tile);
+            player.addProperty(tile);
             if (!isFree()) player.debitMoney(tile.getCost());
             nextPlayer();
         }

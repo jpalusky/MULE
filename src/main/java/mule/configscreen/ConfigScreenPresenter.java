@@ -1,5 +1,6 @@
 package mule.configscreen;
 
+import com.airhacks.afterburner.injection.Injector;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -10,7 +11,7 @@ import javafx.stage.Stage;
 import mule.Difficulty;
 import mule.GameState;
 import mule.KeyHandler;
-import mule.MapType;
+import mule.world.map.MapType;
 import mule.configscreen.playerselect.PlayerSelectPresenter;
 import mule.configscreen.playerselect.PlayerSelectView;
 import mule.mainscreen.MainScreenView;
@@ -28,7 +29,6 @@ import javax.inject.Inject;
  */
 public class ConfigScreenPresenter implements Presenter, Validateable {
     @Inject private Stage primaryStage;
-    @Inject private GameState gameState;
     @Inject private KeyHandler keyHandler;
 
     @FXML private ChoiceBox<Difficulty> difficultyChoiceBox;
@@ -108,7 +108,9 @@ public class ConfigScreenPresenter implements Presenter, Validateable {
                 ps[i] = players[i].getPlayer();
             }
 
-            gameState.configure(ps, difficultyChoiceBox.getValue(), mapTypeChoiceBox.getValue());
+            GameState gameState = new GameState(ps,
+                    difficultyChoiceBox.getValue(), mapTypeChoiceBox.getValue());
+            Injector.setModelOrService(gameState.getClass(), gameState);
 
             new MainScreenView().getViewAsync(view -> {
                 Scene scene = new Scene(view);

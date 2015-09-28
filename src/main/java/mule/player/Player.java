@@ -24,6 +24,7 @@ public class Player {
     private final Race race;
 
     private Point location;
+
     private IntegerProperty money;
 
     private final Set<Tile> properties;
@@ -63,8 +64,12 @@ public class Player {
         money.set(Math.max(0, getMoney() - amount));
     }
 
-    public Set<Tile> getProperties() {
-        return properties;
+    public void addProperty(Tile property) {
+        properties.add(property);
+    }
+
+    public boolean owns(Tile property) {
+        return properties.contains(property);
     }
 
     public Color getColor() {
@@ -77,6 +82,20 @@ public class Player {
 
     public StringProperty getNameProp() {
         return name;
+    }
+
+    /**
+     * Calculate the player's score based on the following criteria:
+     *
+     * - 1 point per dollar of money.
+     * - 500 points for each plot of land owned.
+     * - 1 point per dollar value of goods (energy, food, ore).
+     *
+     * @return the player's score.
+     */
+    public int calcScore() {
+        // TODO: Include other resources in score computation.
+        return getMoney() + 500*properties.size();
     }
 
     public void moveUp() {
