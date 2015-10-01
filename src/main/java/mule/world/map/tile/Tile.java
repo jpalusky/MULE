@@ -10,6 +10,8 @@ import mule.player.Player;
 public class Tile {
     private final ObjectProperty<TileType> type;
     private final ObjectProperty<Player> owner;
+    /** The players in the current tile. */
+    private final ObjectProperty<Player> player;
 
     // This is only here because the injector uses reflection
     // to instantiate the class with the empty constructor.
@@ -20,6 +22,7 @@ public class Tile {
     public Tile(TileType type) {
         this.type = new SimpleObjectProperty<>(type);
         owner = new SimpleObjectProperty<>();
+        player = new SimpleObjectProperty<>();
     }
 
     public TileType getTileType() {
@@ -39,11 +42,22 @@ public class Tile {
     }
 
     public int getCost() {
-        // TODO: set cost based on tile type.
-        return 200;
+        return 300;
     }
 
     public ObjectProperty<Player> getOwnerProp() {
         return owner;
+    }
+
+    public ObjectProperty<Player> getPlayerProp() {
+        return player;
+    }
+
+    public void addPlayer(Player player) {
+        this.player.set(player);
+    }
+
+    public void removePlayer() {
+        player.set(null);
     }
 }

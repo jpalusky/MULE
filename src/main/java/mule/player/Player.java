@@ -1,10 +1,7 @@
 package mule.player;
 
 import com.airhacks.afterburner.injection.Injector;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import mule.GameState;
 import mule.world.map.Point;
 import mule.world.map.tile.Tile;
@@ -23,9 +20,10 @@ public class Player {
     private final Color color;
     private final Race race;
 
-    private Point location;
+    private final ObjectProperty<Point> location;
 
     private IntegerProperty money;
+    private IntegerProperty food;
 
     private final Set<Tile> properties;
 
@@ -39,7 +37,8 @@ public class Player {
         this.color = color;
         this.race = race;
         money = new SimpleIntegerProperty(race.getStartingMoney());
-        location = new Point();
+        food = new SimpleIntegerProperty();
+        location = new SimpleObjectProperty<>(new Point(0, 0));
         properties = new HashSet<>();
         Injector.injectMembers(getClass(), this);
     }
@@ -98,20 +97,36 @@ public class Player {
         return getMoney() + 500*properties.size();
     }
 
+    public int getFood() {
+        return food.getValue();
+    }
+
+    public ObjectProperty<Point> getLocationProp() {
+        return location;
+    }
+
+    public Point getLocation() {
+        return location.get();
+    }
+
     public void moveUp() {
-        location.y = Math.max(0, location.y - 1);
+        Point p = location.get();
+        location.set(new Point(p.x, Math.max(0, p.y - 1)));
     }
 
     public void moveDown() {
-        location.y = Math.min(4, location.y + 1);
+        Point p = location.get();
+        location.set(new Point(p.x, Math.min(4, p.y + 1)));
     }
 
     public void moveLeft() {
-        location.x = Math.max(0, location.x - 1);
+        Point p = location.get();
+        location.set(new Point(Math.max(0, p.x - 1), p.y));
     }
 
     public void moveRight() {
-        location.x = Math.min(8, location.x + 1);
+        Point p = location.get();
+        location.set(new Point(Math.min(8, p.x + 1), p.y));
     }
 
     @Override

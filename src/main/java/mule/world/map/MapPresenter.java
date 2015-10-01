@@ -38,5 +38,18 @@ public class MapPresenter implements Presenter {
                 tileView.getViewAsync(view -> grid.add(view, xx, yy));
             }
         }
+
+        turnManager.getCurrentPlayerProp().addListener((obs, oldPlayer, currentPlayer) -> {
+            if (currentPlayer != null) {
+                map.getTile(currentPlayer.getLocation()).addPlayer(currentPlayer);
+                currentPlayer.getLocationProp().addListener((obs2, oldPoint, point) -> {
+                    map.getTile(oldPoint).removePlayer();
+                    map.getTile(point).addPlayer(currentPlayer);
+                });
+            }
+            if (oldPlayer != null) {
+                map.getTile(oldPlayer.getLocation()).removePlayer();
+            }
+        });
     }
 }
