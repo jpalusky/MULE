@@ -1,0 +1,49 @@
+@font-face {
+    -fx-font-family: 8bit;
+    src: url("PressStart2P.tff");
+}
+.title {
+    -fx-font-size: 3em;
+    -fx-font-family: "8bit";
+    -fx-font-weight: 700;
+    -fx-background-color: red;
+}
+.content {
+    -fx-background-color: #A68A32;
+}
+.btn {
+    -fx-font-size: 1.8em;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+    -fx-background-color: #333333;
+    -fx-text-fill: #A68A32;
+    -fx-font-weight: 900;
+    -fx-padding: 0px 6px 0px 6px;
+}
+.btn:hover {
+    -fx-background-color: #666666;
+}
+.btn-small {
+    -fx-font-size: 1.5em;
+}
+.dropdown {
+    -fx-font-size: 1em;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+    -fx-color-label-visible: false;
+}
+.dropdown .menu-item {
+   -fx-padding-left: auto;
+   -fx-padding-right: auto;
+   }
+.dropdown .menu-item:focused {
+   -fx-background-color: yellow;
+}
+.label-text {
+    -fx-font-size: 1.6em;
+    -fx-text-fill: #3333333;
+    -fx-font-weight: 700;
+}
+.error {
+    -fx-effect: dropshadow( gaussian, rgba( 255, 0, 0, 1 ), 10, 0, 0, 0 );
+}

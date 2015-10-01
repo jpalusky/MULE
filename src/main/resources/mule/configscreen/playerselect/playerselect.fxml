@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
+<?import java.net.URL?>
 <Label fx:id="playerNumberLabel" contentDisplay="BOTTOM" text="Player #" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mule.configscreen.playerselect.PlayerSelectPresenter">
    <graphic>
       <HBox>
@@ -37,4 +38,7 @@
    <padding>
       <Insets bottom="5.0" top="5.0" />
    </padding>
+   <stylesheets>
+      <URL value="@../menu.css" />
+   </stylesheets>
 </Label>

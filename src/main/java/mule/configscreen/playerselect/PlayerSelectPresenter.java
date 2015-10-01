@@ -51,6 +51,27 @@ public class PlayerSelectPresenter implements Presenter, Validateable {
         playerNumberLabel.setManaged(true);
     }
 
+    public void error() {
+        if (getName().isEmpty()) {
+            if (!name.getStyleClass().contains("error")) name.getStyleClass().add("error");
+        } else {
+            name.getStyleClass().remove("error");
+        }
+
+        if (getRace() == null) {
+            if (!race.getStyleClass().contains("error")) race.getStyleClass().add("error");
+        } else {
+            race.getStyleClass().remove("error");
+        }
+
+        if (getColor() == null) {
+            if (!color.getStyleClass().contains("error")) color.getStyleClass().add("error");
+        } else {
+            color.getStyleClass().remove("error");
+        }
+
+    }
+
     @Override
     public boolean isValid() {
         return !(getName().isEmpty() || getRace() == null || getColor() == null);

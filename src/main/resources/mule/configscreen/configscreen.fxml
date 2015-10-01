@@ -1,42 +1,47 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?><?language javascript?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mule.configscreen.ConfigScreenPresenter">
+<?import java.net.URL?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" styleClass="content" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mule.configscreen.ConfigScreenPresenter">
    <children>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Game Configuration">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Game Configuration">
          <font>
             <Font size="26.0" />
          </font>
       </Text>
-      <Label contentDisplay="BOTTOM" text="Difficulty">
+      <Label styleClass="label-text" contentDisplay="BOTTOM" text="Difficulty">
          <graphic>
-            <ChoiceBox fx:id="difficultyChoiceBox" prefWidth="150.0" />
+            <ChoiceBox styleClass="dropdown" fx:id="difficultyChoiceBox" prefWidth="150.0" />
          </graphic>
          <padding>
             <Insets bottom="5.0" />
          </padding>
       </Label>
-      <Label contentDisplay="BOTTOM" text="Map Type">
+      <Label styleClass="label-text" contentDisplay="BOTTOM" text="Map Type">
          <graphic>
-            <ChoiceBox id="mapTypeChoiceBox" fx:id="mapTypeChoiceBox" prefWidth="150.0" />
+            <ChoiceBox styleClass="dropdown" id="mapTypeChoiceBox" fx:id="mapTypeChoiceBox" prefWidth="150.0"/>
          </graphic>
          <padding>
             <Insets bottom="5.0" top="5.0" />
          </padding>
       </Label>
       <VBox fx:id="playerContainer" alignment="CENTER" />
-      <HBox alignment="CENTER">
+      <HBox alignment="BOTTOM_CENTER">
          <children>
-            <Button fx:id="addPlayerButton" mnemonicParsing="false" onAction="#addPlayer" text="Add Player">
+            <Button fx:id="addPlayerButton" mnemonicParsing="false" onAction="#addPlayer" styleClass="btn,btn-small" text="Add Player">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="removePlayerButton" mnemonicParsing="false" onAction="#removePlayer" text="Remove Player">
+            <Button fx:id="removePlayerButton" mnemonicParsing="false" onAction="#removePlayer" styleClass="btn,btn-small" text="Remove Player">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
@@ -46,9 +51,15 @@
             <Insets bottom="5.0" top="5.0" />
          </padding>
       </HBox>
-      <Button fx:id="doneButton" mnemonicParsing="false" onAction="#done" text="Done" />
+      <Button fx:id="doneButton" alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#done" styleClass="btn" text="Done" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin></Button>
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
+   <stylesheets>
+      <URL value="@menu.css" />
+   </stylesheets>
 </VBox>

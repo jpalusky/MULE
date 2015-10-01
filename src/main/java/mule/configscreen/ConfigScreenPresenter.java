@@ -117,6 +117,25 @@ public class ConfigScreenPresenter implements Presenter, Validateable {
                 scene.addEventHandler(EventType.ROOT, keyHandler::handle);
                 primaryStage.setScene(scene);
             });
+        } else {
+            this.error();
+            for (int i = 0; i < numPlayers; ++i) {
+                players[i].error();
+            }
+        }
+    }
+
+    public void error() {
+        if (difficultyChoiceBox.getValue() == null) {
+            if (!difficultyChoiceBox.getStyleClass().contains("error")) difficultyChoiceBox.getStyleClass().add("error");
+        } else {
+            difficultyChoiceBox.getStyleClass().remove("error");
+        }
+
+        if (mapTypeChoiceBox.getValue() == null) {
+            if (!mapTypeChoiceBox.getStyleClass().contains("error")) mapTypeChoiceBox.getStyleClass().add("error");
+        } else {
+            mapTypeChoiceBox.getStyleClass().remove("error");
         }
     }
 }
