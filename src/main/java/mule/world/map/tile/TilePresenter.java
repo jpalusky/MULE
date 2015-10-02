@@ -6,7 +6,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import mule.GameState;
 import mule.LandSelectionManager;
-import mule.player.Player;
 import mvp.Presenter;
 
 import javax.inject.Inject;

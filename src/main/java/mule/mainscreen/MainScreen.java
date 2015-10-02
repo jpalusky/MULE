@@ -6,16 +6,22 @@ import javafx.scene.layout.Pane;
 public class MainScreen extends Pane {
     private Pane root;
 
-    // Empty constructor for injector.
-    public MainScreen() {
-    }
+    private FXMLView map;
+    private FXMLView town;
 
-    public MainScreen(Pane root) {
+    public void configure(Pane root, FXMLView map, FXMLView town) {
         this.root = root;
+        this.map = map;
+        this.town = town;
     }
 
-    public void setView(FXMLView view) {
+    public void showTown() {
         root.getChildren().clear();
-        view.getViewAsync(v -> root.getChildren().add(v));
+        town.getViewAsync(v -> root.getChildren().add(v));
+    }
+
+    public void showMap() {
+        root.getChildren().clear();
+        map.getViewAsync(v -> root.getChildren().add(v));
     }
 }

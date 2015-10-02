@@ -3,6 +3,7 @@ package mule;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.*;
 import javafx.scene.input.KeyCode;
+import mule.mainscreen.MainScreen;
 import mule.player.Player;
 
 import javax.inject.Inject;
@@ -16,6 +17,7 @@ import java.util.Queue;
 public class TurnManager extends AnimationTimer {
     @Inject private GameState gameState;
     @Inject private KeyHandler keyHandler;
+    @Inject private MainScreen mainScreen;
 
     private long startTime;
     private long endTime;
@@ -47,6 +49,14 @@ public class TurnManager extends AnimationTimer {
         // Change players when their turn ends.
         if (now > endTime) {
             currentPlayer.set(players.remove());
+
+            if (currentPlayer.get().isInTown()) {
+                mainScreen.showTown();
+            }
+            else {
+                mainScreen.showMap();
+            }
+
             startTime = now;
             endTime = startTime + calcTurnTime() * ((long) 1e9);
         }

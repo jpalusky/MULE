@@ -1,11 +1,11 @@
 package mule.mainscreen;
 
-import com.airhacks.afterburner.injection.Injector;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import mule.LandSelectionManager;
 import mule.TurnManager;
 import mule.world.map.MapView;
+import mule.world.town.TownView;
 import mvp.Presenter;
 
 import javax.inject.Inject;
@@ -17,6 +17,7 @@ import javax.inject.Inject;
  * screen should be a part of the MainScreen.
  */
 public class MainScreenPresenter implements Presenter {
+    @Inject private MainScreen mainScreen;
     @Inject private LandSelectionManager landSelectionManager;
     @Inject private TurnManager turnManager;
 
@@ -24,10 +25,9 @@ public class MainScreenPresenter implements Presenter {
 
     @Override
     public void initialize() {
-        MainScreen mainScreen = new MainScreen(mainContainer);
-        Injector.setModelOrService(mainScreen.getClass(), mainScreen);
+        mainScreen.configure(mainContainer, new MapView(), new TownView());
 
-        mainScreen.setView(new MapView());
+        mainScreen.showMap();
 
         landSelectionManager.getInLandSelectionPhaseProp().addListener((obs, old, newValue) -> {
             if (!newValue) turnManager.start();

@@ -25,6 +25,8 @@ public class Player {
     private IntegerProperty money;
     private IntegerProperty food;
 
+    private boolean inTown;
+
     private final Set<Tile> properties;
 
     // Empty constructor for the injector.
@@ -111,6 +113,18 @@ public class Player {
 
     public Point getLocation() {
         return location.get();
+    }
+
+    public void enterTown() {
+        inTown = true;
+    }
+
+    public void exitTown() {
+        inTown = false;
+    }
+
+    public boolean isInTown() {
+        return inTown;
     }
 
     public void moveUp() {

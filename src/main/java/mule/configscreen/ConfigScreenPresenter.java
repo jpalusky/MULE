@@ -11,11 +11,11 @@ import javafx.stage.Stage;
 import mule.Difficulty;
 import mule.GameState;
 import mule.KeyHandler;
-import mule.world.map.MapType;
 import mule.configscreen.playerselect.PlayerSelectPresenter;
 import mule.configscreen.playerselect.PlayerSelectView;
 import mule.mainscreen.MainScreenView;
 import mule.player.Player;
+import mule.world.map.MapType;
 import mvp.Presenter;
 import mvp.Validateable;
 

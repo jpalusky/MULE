@@ -12,7 +12,6 @@ import mule.player.Player;
 import mule.world.map.tile.Tile;
 import mule.world.map.tile.TileType;
 import mule.world.map.tile.TileView;
-import mule.world.town.TownView;
 import mvp.Presenter;
 
 import javax.inject.Inject;
@@ -50,6 +49,12 @@ public class MapPresenter implements Presenter {
             }
         }
 
+        // Display current player.
+        if (turnManager.getCurrentPlayer() != null) {
+            Player p = turnManager.getCurrentPlayer();
+            map.getTile(p.getLocation()).addPlayer(p);
+        }
+
         // Change player displayed on map when current player changes.
         turnManager.getCurrentPlayerProp().addListener((obs, oldPlayer, currentPlayer) -> {
             if (oldPlayer != null) {
@@ -77,7 +82,8 @@ public class MapPresenter implements Presenter {
             // Enter town.
             // TODO: detect town instead of using hardcoded coordinates.
             if (player.getLocation().equals(new Point(4, 2))) {
-                mainScreen.setView(new TownView());
+                player.enterTown();
+                mainScreen.showTown();
             }
         });
     }
