@@ -95,6 +95,18 @@ public class TurnManager extends AnimationTimer {
         return timeLeft;
     }
 
+    public double getTimeLeft() {
+        return timeLeft.get();
+    }
+
+    public int getRoundNumber() {
+        return roundNumber.get();
+    }
+
+    public void endTurn() {
+        endTime = -Long.MIN_VALUE;
+    }
+
     @Override
     public void start() {
         // Normalize startTime.

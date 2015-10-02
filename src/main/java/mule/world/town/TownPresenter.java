@@ -5,22 +5,43 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import mule.TurnManager;
+import mule.player.Player;
 import mvp.Presenter;
 
-/**
- * Created by Chuanyui on 9/17/15.
- */
+import javax.inject.Inject;
+
+
 public class TownPresenter implements Presenter {
+    @Inject private TurnManager turnManager;
+
     @FXML private ImageView player;
 
     private Image image;
 
     //constant variables
     final static int STEPS = 10;
+    final static int MAX_BONUS = 250;
     boolean steps = true;
+    //constant int for location
+    final static int NONE = 0;
+    final static int PUB = 1;
+    final static int STORE = 2;
+    final static int ASSAY = 3;
+    final static int LAND = 4;
 
-    @Override
+    //Constructor
+    Building pub;
+    int[] roundBonus;
+
+    //Variables
+    double timeLeft;   //these 2 need to pass in
+    int round;
+
+    @FXML
     public void initialize() {
+        roundBonus = new int[]{50,50,50,100,100,100,100,150,150,150,150,200};
+        pub = new Building("Pub", 0, 150, 200, 400);
         player.setFocusTraversable(true);
     }
 
@@ -55,6 +76,31 @@ public class TownPresenter implements Presenter {
             if(!isblocked(positionX+STEPS, positionY)) {
                 player.setX(positionX + STEPS);
             }
+        }
+
+        //interact
+        if (event.getCode() == KeyCode.ENTER) {
+            //check player location before interact
+            switch(checkLocation(positionX,positionY)) {
+                case PUB:   pubInteraction();
+                            break;
+
+                case NONE:  break;
+
+                default:    break;
+            }
+        }
+    }
+
+    private int checkLocation(double positionX, double positionY) {
+        //if player is at a pub
+        if(positionX > pub.getxMin() && positionX < pub.getxMax()
+                && positionY > pub.getyMin() && positionY < pub.getyMax()) {
+            return PUB;
+        }
+        //more location in here!!
+        else {
+            return NONE;
         }
     }
 
@@ -91,6 +137,22 @@ public class TownPresenter implements Presenter {
             blocked = true;
         }
         return blocked;
+    }
+
+    private void pubInteraction() {
+        gamble();
+        //then end turn
+        turnManager.endTurn();
+        
+    }
+
+    private void gamble() {
+        Player currentPlayer = turnManager.getCurrentPlayer();
+        timeLeft = turnManager.getTimeLeft();
+        round = turnManager.getRoundNumber();
+        int moneyBonus = (int)(roundBonus[round] * timeLeft);
+        //do stuff with the moneyBonus
+        currentPlayer.addMoney(moneyBonus);
     }
 }
 

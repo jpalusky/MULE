@@ -63,6 +63,10 @@ public class Player {
         money.set(Math.max(0, getMoney() - amount));
     }
 
+    public void addMoney(int amount) {
+        debitMoney(-amount);
+    }
+
     public void addProperty(Tile property) {
         properties.add(property);
     }
