@@ -1,5 +1,6 @@
 package mule.mainscreen;
 
+import com.airhacks.afterburner.injection.Injector;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import mule.LandSelectionManager;
@@ -23,7 +24,10 @@ public class MainScreenPresenter implements Presenter {
 
     @Override
     public void initialize() {
-        new MapView().getViewAsync(view -> mainContainer.getChildren().add(view));
+        MainScreen mainScreen = new MainScreen(mainContainer);
+        Injector.setModelOrService(mainScreen.getClass(), mainScreen);
+
+        mainScreen.setView(new MapView());
 
         landSelectionManager.getInLandSelectionPhaseProp().addListener((obs, old, newValue) -> {
             if (!newValue) turnManager.start();
