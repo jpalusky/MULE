@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import mule.Difficulty;
 import mule.GameState;
 import mule.KeyHandler;
+import mule.player.Color;
+import mule.player.Race;
 import mule.world.map.MapType;
 import mule.configscreen.playerselect.PlayerSelectPresenter;
 import mule.configscreen.playerselect.PlayerSelectView;
@@ -64,6 +66,9 @@ public class ConfigScreenPresenter implements Presenter, Validateable {
         }
 
         update();
+        System.out.println("what");
+        defaultStart();
+
     }
 
     @FXML
@@ -117,25 +122,20 @@ public class ConfigScreenPresenter implements Presenter, Validateable {
                 scene.addEventHandler(EventType.ROOT, keyHandler::handle);
                 primaryStage.setScene(scene);
             });
-        } else {
-            this.error();
-            for (int i = 0; i < numPlayers; ++i) {
-                players[i].error();
-            }
         }
     }
 
-    public void error() {
-        if (difficultyChoiceBox.getValue() == null) {
-            if (!difficultyChoiceBox.getStyleClass().contains("error")) difficultyChoiceBox.getStyleClass().add("error");
-        } else {
-            difficultyChoiceBox.getStyleClass().remove("error");
-        }
+    public void defaultStart() {
+        Player[] ps = {new Player("Player1", Color.BLUE, Race.HUMAN), new Player("Player2", Color.RED, Race.FLAPPER)};
 
-        if (mapTypeChoiceBox.getValue() == null) {
-            if (!mapTypeChoiceBox.getStyleClass().contains("error")) mapTypeChoiceBox.getStyleClass().add("error");
-        } else {
-            mapTypeChoiceBox.getStyleClass().remove("error");
-        }
+        GameState gameState = new GameState(ps,
+                difficultyChoiceBox.getValue(), mapTypeChoiceBox.getValue());
+        Injector.setModelOrService(gameState.getClass(), gameState);
+
+        new MainScreenView().getViewAsync(view -> {
+            Scene scene = new Scene(view);
+            scene.addEventHandler(EventType.ROOT, keyHandler::handle);
+            primaryStage.setScene(scene);
+        });
     }
 }

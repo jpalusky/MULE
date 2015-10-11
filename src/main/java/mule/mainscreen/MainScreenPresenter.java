@@ -1,9 +1,11 @@
 package mule.mainscreen;
 
+import com.airhacks.afterburner.injection.Injector;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import mule.LandSelectionManager;
-import mule.TurnManager;
+import mule.RoundManager;
 import mule.world.map.MapView;
 import mvp.Presenter;
 
@@ -17,16 +19,21 @@ import javax.inject.Inject;
  */
 public class MainScreenPresenter implements Presenter {
     @Inject private LandSelectionManager landSelectionManager;
-    @Inject private TurnManager turnManager;
-
+    @Inject private RoundManager roundManager;
     @FXML private Pane mainContainer;
 
     @Override
     public void initialize() {
-        new MapView().getViewAsync(view -> mainContainer.getChildren().add(view));
+        MainScreen mainScreen = new MainScreen(mainContainer);
+        Injector.setModelOrService(mainScreen.getClass(), mainScreen);
+
+        mainScreen.setView(new MapView());
 
         landSelectionManager.getInLandSelectionPhaseProp().addListener((obs, old, newValue) -> {
-            if (!newValue) turnManager.start();
+            if (!newValue) {
+                System.out.println("THIS RAN" + roundManager.getRoundNumberProp());
+                roundManager.start();
+            }
         });
     }
 }
