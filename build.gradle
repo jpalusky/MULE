@@ -23,6 +23,10 @@ jar {
                    'Implementation-Version': version,
                    'Main-Class': 'App'
     }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 // vim:ft=groovy
