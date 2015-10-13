@@ -106,6 +106,7 @@ public class ConfigScreenPresenter implements Presenter, Validateable {
             Player[] ps = new Player[numPlayers];
             for (int i = 0; i < numPlayers; ++i) {
                 ps[i] = players[i].getPlayer();
+                ps[i].setDefaultResources(difficultyChoiceBox.getValue());
             }
 
             GameState gameState = new GameState(ps,

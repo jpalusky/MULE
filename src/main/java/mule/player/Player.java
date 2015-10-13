@@ -2,6 +2,7 @@ package mule.player;
 
 import com.airhacks.afterburner.injection.Injector;
 import javafx.beans.property.*;
+import mule.Difficulty;
 import mule.world.map.Point;
 import mule.world.map.tile.Tile;
 
@@ -21,6 +22,8 @@ public class Player {
 
     private final IntegerProperty money;
     private final IntegerProperty food;
+    private final IntegerProperty energy;
+    private final IntegerProperty ore;
 
     private boolean inTown;
 
@@ -37,10 +40,23 @@ public class Player {
         this.race = race;
         money = new SimpleIntegerProperty(race.getStartingMoney());
         food = new SimpleIntegerProperty();
+        energy = new SimpleIntegerProperty();
+        ore = new SimpleIntegerProperty();
         mapLocation = new SimpleObjectProperty<>(new Point(0, 0));
         townLocation = new SimpleObjectProperty<>(new Point(0, 0));
         properties = new HashSet<>();
         Injector.injectMembers(getClass(), this);
+    }
+
+    /**
+     * Configure the default resources of the player based on the difficulty.
+     *
+     * @param d the game difficulty.
+     */
+    public void setDefaultResources(Difficulty d) {
+        food.set(d.getStartingFood());
+        energy.set(d.getStartingEnergy());
+        ore.set(d.getStartingOre());
     }
 
     public int getMoney() {
@@ -49,6 +65,18 @@ public class Player {
 
     public IntegerProperty getMoneyProp() {
         return money;
+    }
+
+    public IntegerProperty getFoodProp() {
+        return food;
+    }
+
+    public IntegerProperty getEnergyProp() {
+        return energy;
+    }
+
+    public IntegerProperty getOreProp() {
+        return ore;
     }
 
     /**
@@ -97,12 +125,20 @@ public class Player {
      * @return the player's score.
      */
     public int calcScore() {
-        // TODO: Include other resources in score computation.
-        return getMoney() + 500*properties.size();
+        return getMoney() + 500*properties.size() + getEnergy()
+                + getFood() + getOre();
     }
 
     public int getFood() {
         return food.getValue();
+    }
+
+    public int getOre() {
+        return ore.get();
+    }
+
+    public int getEnergy() {
+        return energy.get();
     }
 
     public ObjectProperty<Point> getMapLocationProp() {

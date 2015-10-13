@@ -13,12 +13,22 @@ public class PlayerStatusPresenter implements Presenter{
 
     @FXML private Text playerName;
     @FXML private Text money;
+    @FXML private Text food;
+    @FXML private Text energy;
+    @FXML private Text ore;
 
     @Override
     public void initialize() {
         playerName.textProperty().bind(player.getNameProp());
         playerName.setFill(player.getColor().getColor());
+
         money.textProperty().bindBidirectional(player.getMoneyProp(),
+                new NumberStringConverter());
+        food.textProperty().bindBidirectional(player.getFoodProp(),
+                new NumberStringConverter());
+        energy.textProperty().bindBidirectional(player.getEnergyProp(),
+                new NumberStringConverter());
+        ore.textProperty().bindBidirectional(player.getOreProp(),
                 new NumberStringConverter());
     }
 }

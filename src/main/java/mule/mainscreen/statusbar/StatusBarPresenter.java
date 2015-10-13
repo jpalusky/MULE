@@ -2,7 +2,6 @@ package mule.mainscreen.statusbar;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
@@ -28,9 +27,10 @@ public class StatusBarPresenter implements Presenter {
 
     @FXML private Pane playerStats;
 
-    // Stuff for displaying time left.
-    @FXML private Label timeLeftLabel;
+    // Stuff for displaying turn info.
+    @FXML private Node turnBox;
     @FXML private Text timeLeftText;
+    @FXML private Text turnCurrentPlayer;
 
     @Override
     public void initialize() {
@@ -57,10 +57,22 @@ public class StatusBarPresenter implements Presenter {
             playerStatView.getViewAsync(playerStats.getChildren()::add);
         }
 
-        // Show time left in turn.
-        timeLeftLabel.visibleProperty().bind(lsMan.getInLandSelectionPhaseProp().not());
-        timeLeftLabel.managedProperty().bind(lsMan.getInLandSelectionPhaseProp().not());
+        // Show information relevant to the turn.
+        turnBox.visibleProperty().bind(lsMan.getInLandSelectionPhaseProp().not());
+        turnBox.managedProperty().bind(lsMan.getInLandSelectionPhaseProp().not());
         timeLeftText.textProperty().bindBidirectional(turnManager.getTimeLeftProp(),
                 new NumberStringConverter());
+        turnCurrentPlayer.textProperty().bindBidirectional(turnManager.getCurrentPlayerProp(),
+                new StringConverter<Player>() {
+                    @Override
+                    public String toString(Player player) {
+                        return player == null ? "" : player.getName();
+                    }
+                    @Override
+                    public Player fromString(String string) {
+                        return null;
+                    }
+                });
+        System.out.println(turnCurrentPlayer);
     }
 }
