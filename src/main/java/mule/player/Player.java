@@ -2,11 +2,9 @@ package mule.player;
 
 import com.airhacks.afterburner.injection.Injector;
 import javafx.beans.property.*;
-import mule.GameState;
 import mule.world.map.Point;
 import mule.world.map.tile.Tile;
 
-import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,16 +12,15 @@ import java.util.Set;
  * This is the model for a Player.
  */
 public class Player {
-    @Inject private GameState gameState;
-
     private final StringProperty name;
     private final Color color;
     private final Race race;
 
-    private final ObjectProperty<Point> location;
+    private final ObjectProperty<Point> mapLocation;
+    private final ObjectProperty<Point> townLocation;
 
-    private IntegerProperty money;
-    private IntegerProperty food;
+    private final IntegerProperty money;
+    private final IntegerProperty food;
 
     private boolean inTown;
 
@@ -40,7 +37,8 @@ public class Player {
         this.race = race;
         money = new SimpleIntegerProperty(race.getStartingMoney());
         food = new SimpleIntegerProperty();
-        location = new SimpleObjectProperty<>(new Point(0, 0));
+        mapLocation = new SimpleObjectProperty<>(new Point(0, 0));
+        townLocation = new SimpleObjectProperty<>(new Point(0, 0));
         properties = new HashSet<>();
         Injector.injectMembers(getClass(), this);
     }
@@ -107,12 +105,12 @@ public class Player {
         return food.getValue();
     }
 
-    public ObjectProperty<Point> getLocationProp() {
-        return location;
+    public ObjectProperty<Point> getMapLocationProp() {
+        return mapLocation;
     }
 
-    public Point getLocation() {
-        return location.get();
+    public Point getMapLocation() {
+        return mapLocation.get();
     }
 
     public void enterTown() {
@@ -128,23 +126,31 @@ public class Player {
     }
 
     public void moveUp() {
-        Point p = location.get();
-        location.set(new Point(p.x, Math.max(0, p.y - 1)));
+        if (!inTown) {
+            Point p = mapLocation.get();
+            mapLocation.set(new Point(p.x, Math.max(0, p.y - 1)));
+        }
     }
 
     public void moveDown() {
-        Point p = location.get();
-        location.set(new Point(p.x, Math.min(4, p.y + 1)));
+        if (!inTown) {
+            Point p = mapLocation.get();
+            mapLocation.set(new Point(p.x, Math.min(4, p.y + 1)));
+        }
     }
 
     public void moveLeft() {
-        Point p = location.get();
-        location.set(new Point(Math.max(0, p.x - 1), p.y));
+        if (!inTown) {
+            Point p = mapLocation.get();
+            mapLocation.set(new Point(Math.max(0, p.x - 1), p.y));
+        }
     }
 
     public void moveRight() {
-        Point p = location.get();
-        location.set(new Point(Math.min(8, p.x + 1), p.y));
+        if (!inTown) {
+            Point p = mapLocation.get();
+            mapLocation.set(new Point(Math.min(8, p.x + 1), p.y));
+        }
     }
 
     @Override

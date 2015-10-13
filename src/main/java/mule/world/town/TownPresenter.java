@@ -5,7 +5,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import mule.KeyHandler;
 import mule.TurnManager;
+import mule.mainscreen.MainScreen;
 import mule.player.Player;
 import mvp.Presenter;
 
@@ -14,6 +16,8 @@ import javax.inject.Inject;
 
 public class TownPresenter implements Presenter {
     @Inject private TurnManager turnManager;
+    @Inject private KeyHandler keyHandler;
+    @Inject private MainScreen mainScreen;
 
     @FXML private ImageView player;
 
@@ -153,6 +157,18 @@ public class TownPresenter implements Presenter {
         int moneyBonus = (int)(roundBonus[round] * timeLeft);
         //do stuff with the moneyBonus
         currentPlayer.addMoney(moneyBonus);
+    }
+
+    public void bindInput() {
+        // Press X to exit town.
+        keyHandler.bind(KeyCode.X, e -> {
+            turnManager.getCurrentPlayer().exitTown();
+            mainScreen.showMap();
+        });
+    }
+
+    public void unbindInput() {
+        keyHandler.unbind(KeyCode.X);
     }
 }
 

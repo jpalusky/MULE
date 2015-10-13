@@ -2,7 +2,6 @@ package mule;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.*;
-import javafx.scene.input.KeyCode;
 import mule.mainscreen.MainScreen;
 import mule.player.Player;
 
@@ -121,14 +120,6 @@ public class TurnManager extends AnimationTimer {
     public void start() {
         // Normalize startTime.
         startTime = -1;
-        bindMovementKeys();
         super.start();
-    }
-
-    private void bindMovementKeys() {
-        keyHandler.bind(KeyCode.RIGHT, e -> getCurrentPlayer().moveRight());
-        keyHandler.bind(KeyCode.LEFT, e -> getCurrentPlayer().moveLeft());
-        keyHandler.bind(KeyCode.DOWN, e -> getCurrentPlayer().moveDown());
-        keyHandler.bind(KeyCode.UP, e -> getCurrentPlayer().moveUp());
     }
 }

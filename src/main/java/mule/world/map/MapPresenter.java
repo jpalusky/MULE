@@ -5,7 +5,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import mule.GameState;
 import mule.KeyHandler;
-import mule.LandSelectionManager;
 import mule.TurnManager;
 import mule.mainscreen.MainScreen;
 import mule.player.Player;
@@ -25,7 +24,6 @@ import java.util.HashMap;
 public class MapPresenter implements Presenter {
     @Inject private MainScreen mainScreen;
     @Inject private Map map;
-    @Inject private LandSelectionManager lsMan;
     @Inject private TurnManager turnManager;
     @Inject private GameState gameState;
     @Inject private KeyHandler keyHandler;
@@ -49,42 +47,45 @@ public class MapPresenter implements Presenter {
             }
         }
 
-        // Display current player.
-        if (turnManager.getCurrentPlayer() != null) {
-            Player p = turnManager.getCurrentPlayer();
-            map.getTile(p.getLocation()).addPlayer(p);
-        }
-
         // Change player displayed on map when current player changes.
         turnManager.getCurrentPlayerProp().addListener((obs, oldPlayer, currentPlayer) -> {
             if (oldPlayer != null) {
-                map.getTile(oldPlayer.getLocation()).removePlayer();
+                map.getTile(oldPlayer.getMapLocation()).removePlayer();
             }
 
             if (currentPlayer != null) {
-                map.getTile(currentPlayer.getLocation()).addPlayer(currentPlayer);
+                map.getTile(currentPlayer.getMapLocation()).addPlayer(currentPlayer);
             }
         });
 
         // Add event listeners for player movement.
         for (Player player : gameState.getPlayers()) {
-            player.getLocationProp().addListener((obs2, oldPoint, point) -> {
+            player.getMapLocationProp().addListener((obs2, oldPoint, point) -> {
                 map.getTile(oldPoint).removePlayer();
                 map.getTile(point).addPlayer(player);
             });
         }
+    }
 
+    /**
+     * Bind all user input for the Map.
+     */
+    public void bindInput() {
         // Catch ENTER to enter town.
         keyHandler.bind(KeyCode.ENTER, e -> {
-            if (lsMan.getInLandSelectionPhaseProp().get()) return;
             Player player = turnManager.getCurrentPlayer();
 
-            // Enter town.
-            // TODO: detect town instead of using hardcoded coordinates.
-            if (player.getLocation().equals(new Point(4, 2))) {
-                player.enterTown();
-                mainScreen.showTown();
+            if (player != null) {
+                // TODO: detect town instead of using hardcoded coordinates.
+                if (player.getMapLocation().equals(new Point(4, 2))) {
+                    player.enterTown();
+                    mainScreen.showTown();
+                }
             }
         });
+    }
+
+    public void unbindInput() {
+        keyHandler.unbind(KeyCode.ENTER);
     }
 }
