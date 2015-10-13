@@ -1,3 +1,16 @@
 language: java
+
 jdk:
-    - oraclejdk8
+  - oraclejdk8
+
+before_deploy:
+  - ./gradlew jar
+  - export DEPLOY_FILE=$(ls build/libs/*.jar)
+
+deploy:
+  provider: releases
+  api_key:
+    secure: piUTlON0Tsq6wARCqB4sIU5zX2AIbg1Lv1Gg+M6bPkanSf5js9ywCDpx3EzF4WSQm+ASdePwNVyKuIBFc+YX/SH26FuLMw9pxFanv5WLvoaaf+xFhqBiXwzR0PrjtL8Ul3xBeL+HF72t3riPcYfc8/9AM4l+XwHgJMiIHEsykunFEDpbAY2cevsyOwcnAOeKU/p+Uw8ys+cpvcQMiMJwQExlZhWakc4n2pPilTauIrbbX/JxtfY3LDP5LN98mhkIxM3TRpTOaQUjiR95wbhquCCV23o25YrPJuP9e8jZv1zZmhD9gto1uG0//DiWIR2JzKw6ccMOTupwDmy9NNAJebaUJuIIwahMt5qKZeY5Olp9fOvQeVCzJhQmJOIzqRoIXNI5jh9WkB1iHWRl+Z3ODGVxzAEPci+8l4AK4CqN5VDZdvJzyVCLSO0z+2tc2OkJIXEecjNc0kjD/H0KCCqSTGU4Mv5vtinl9EaUNbU/i7bzh99HT+uMsXGBoeL/dxLTJKs9wk6P07nJmdmKKcLQgyS9Xw6V4rdGxUuCVd2uYML1a01t4KJW616lAMxv+jErJ9F8RDsvmCkPdVEWtXsvedKaLWir09F91W6sJJPTqsGunSo4AVFhUazQBTZhHBBXKvVsOqx+FQ1uh9OSE7ZNdhizYLcrol3CPmU9ca+qJfI=
+  file: "${DEPLOY_FILE}"
+  on:
+    repo: Kelvin-Chen/MULE
