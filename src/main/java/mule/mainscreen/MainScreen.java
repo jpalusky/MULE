@@ -22,6 +22,7 @@ public class MainScreen extends Pane {
         town.getViewAsync(v -> root.getChildren().add(v));
         ((MapPresenter) map.getPresenter()).unbindInput();
         ((TownPresenter) town.getPresenter()).bindInput();
+        ((TownPresenter) town.getPresenter()).resetPlayer();
     }
 
     public void showMap() {

@@ -179,10 +179,15 @@ public class TownPresenter implements Presenter {
         double x = x1;
         double y = y1;
         boolean exit = false;
-        if(x<0 || x>900) {
+        if(x<0 || x>860) {
             exit = true;
         }
         return exit;
+    }
+
+    public void resetPlayer() {
+        player.setX(450);
+        player.setY(125);
     }
 
     public void bindInput() {

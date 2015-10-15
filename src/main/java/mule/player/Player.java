@@ -18,7 +18,6 @@ public class Player {
     private final Race race;
 
     private final ObjectProperty<Point> mapLocation;
-    private final ObjectProperty<Point> townLocation;
 
     private final IntegerProperty money;
     private final IntegerProperty food;
@@ -43,7 +42,6 @@ public class Player {
         energy = new SimpleIntegerProperty();
         ore = new SimpleIntegerProperty();
         mapLocation = new SimpleObjectProperty<>(new Point(0, 0));
-        townLocation = new SimpleObjectProperty<>(new Point(0, 0));
         properties = new HashSet<>();
         Injector.injectMembers(getClass(), this);
     }
