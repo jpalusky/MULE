@@ -45,7 +45,7 @@ public class TownPresenter implements Presenter {
     @FXML
     public void initialize() {
         roundBonus = new int[]{50,50,50,100,100,100,100,150,150,150,150,200};
-        pub = new Building("Pub", 0, 150, 200, 400);
+        pub = new Building("Pub", 0, 225, 250, 500);
         player.setFocusTraversable(true);
     }
 
