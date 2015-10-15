@@ -1,47 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mule.world.town.TownPresenter">
    <children>
       <GridPane id="townMap" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0">
          <children>
-            <ImageView id="pub" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+            <ImageView id="pub" fitHeight="250.0" fitWidth="225.0" pickOnBounds="true" GridPane.rowIndex="1">
                <image>
                   <Image url="@pub.png" />
                </image>
             </ImageView>
-            <ImageView id="store" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <ImageView id="store" fitHeight="250.0" fitWidth="225.0" pickOnBounds="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <image>
                   <Image url="@store.png" />
                </image>
             </ImageView>
-            <ImageView id="assay" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <ImageView id="assay" fitHeight="250.0" fitWidth="225.0" pickOnBounds="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <image>
                   <Image url="@assay.png" />
                </image>
             </ImageView>
-            <ImageView id="land" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
+            <ImageView id="land" fitHeight="250.0" fitWidth="225.0" pickOnBounds="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
                <image>
                   <Image url="@land.png" />
                </image>
             </ImageView>
-            <ImageView id="sand" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView id="sand" fitHeight="250.0" fitWidth="225.0" pickOnBounds="true">
                <image>
                   <Image url="@sand.png" />
                </image>
             </ImageView>
-            <ImageView id="sand" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+            <ImageView id="sand" fitHeight="250.0" fitWidth="225.0" pickOnBounds="true" GridPane.columnIndex="1">
                <image>
                   <Image url="@sand.png" />
                </image>
             </ImageView>
-            <ImageView id="sand" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+            <ImageView id="sand" fitHeight="250.0" fitWidth="225.0" pickOnBounds="true" GridPane.columnIndex="2">
                <image>
                   <Image url="@sand.png" />
                </image>
             </ImageView>
-            <ImageView id="sand" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+            <ImageView id="sand" fitHeight="250.0" fitWidth="225.0" pickOnBounds="true" GridPane.columnIndex="3">
                <image>
                   <Image url="@sand.png" />
                </image>

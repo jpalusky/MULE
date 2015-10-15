@@ -59,12 +59,20 @@ public class TownPresenter implements Presenter {
             if(!isblocked(positionX, positionY-STEPS)) {
                 player.setY(positionY - STEPS);
             }
+            if(isExit(positionX, positionY-STEPS)) {
+                turnManager.getCurrentPlayer().exitTown();
+                mainScreen.showMap();
+            }
         }
         //move down
         if (event.getCode() == KeyCode.DOWN) {
             switchStepsAtLeft();    //temporary
             if(!isblocked(positionX, positionY+STEPS)) {
                 player.setY(positionY + STEPS);
+            }
+            if(isExit(positionX, positionY+STEPS)) {
+                turnManager.getCurrentPlayer().exitTown();
+                mainScreen.showMap();
             }
         }
         //move left
@@ -73,12 +81,20 @@ public class TownPresenter implements Presenter {
             if(!isblocked(positionX-STEPS, positionY)) {
                 player.setX(positionX - STEPS);
             }
+            if(isExit(positionX-STEPS, positionY)) {
+                turnManager.getCurrentPlayer().exitTown();
+                mainScreen.showMap();
+            }
         }
         //move right
         if (event.getCode() == KeyCode.RIGHT) {
             switchStepsAtRight();   //walking right animation
             if(!isblocked(positionX+STEPS, positionY)) {
                 player.setX(positionX + STEPS);
+            }
+            if(isExit(positionX+STEPS, positionY)) {
+                turnManager.getCurrentPlayer().exitTown();
+                mainScreen.showMap();
             }
         }
 
@@ -133,11 +149,11 @@ public class TownPresenter implements Presenter {
     }
 
     private boolean isblocked(double x1, double y1) {
-        double x = x1 + 20;
-        double y = y1 + 40;
+        double x = x1;
+        double y = y1;
         boolean blocked = false;
-        if((y>200 && ((x>0 && x<40) || (x>110 && x<180) || (x>260 && x<320) || (x> 410 && x <470)
-                || (x>560))) || y>360) {
+        if((y>250 && ((x>0 && x<20) || (x>145 && x<245) || (x>360 && x<460) || (x>585 && x<685)
+                || (x>820))) || y>400 || y<0) {
             blocked = true;
         }
         return blocked;
@@ -157,6 +173,16 @@ public class TownPresenter implements Presenter {
         int moneyBonus = (int)(roundBonus[round] * timeLeft);
         //do stuff with the moneyBonus
         currentPlayer.addMoney(moneyBonus);
+    }
+
+    private boolean isExit(double x1, double y1) {
+        double x = x1;
+        double y = y1;
+        boolean exit = false;
+        if(x<0 || x>900) {
+            exit = true;
+        }
+        return exit;
     }
 
     public void bindInput() {
