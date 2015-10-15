@@ -32,8 +32,8 @@ public class MapPresenter implements Presenter {
 
     @Override
     public void initialize() {
-        // TODO: Allow map switching for randomly generated maps.
-        TileType[][] mapType = Map.getStandardMap();
+        TileType[][] mapType = gameState.getMapType() == MapType.STANDARD ?
+                Map.getStandardMap() : Map.getRandomMap();
         map.initialize(mapType);
 
         for (int x = 0; x < 9; ++x) {

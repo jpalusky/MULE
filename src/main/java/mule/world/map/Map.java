@@ -48,7 +48,29 @@ public class Map {
     }
 
     public static TileType[][] getRandomMap() {
-        // TODO: implement this.
-        return getStandardMap();
+        TileType[][] map = new TileType[5][9];
+
+        for (int i = 0; i < map.length; ++i) {
+            for (int j = 0; j < map[i].length; ++j) {
+                map[i][j] = getRandomTile();
+
+                // The river is in the center of the map.
+                if (j == 4) map[i][j] = TileType.RIVER;
+
+                // Town is in the center of the map.
+                if (i == 2 && j == 4) map[i][j] = TileType.TOWN;
+            }
+        }
+
+        return map;
+    }
+
+    private static TileType getRandomTile() {
+        double p = Math.random();
+
+        if (p < .5) return TileType.PLAIN;
+        if (p < .75) return TileType.MOUNTAIN1;
+        if (p < .875) return TileType.MOUNTAIN2;
+        return TileType.MOUNTAIN3;
     }
 }
