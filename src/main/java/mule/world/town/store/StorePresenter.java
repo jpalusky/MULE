@@ -1,7 +1,9 @@
 package mule.world.town.store;
 
+import javafx.beans.value.ObservableObjectValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.converter.NumberStringConverter;
 import mule.GameState;
@@ -17,6 +19,7 @@ public class StorePresenter implements Presenter{
     @Inject Store store;
     @Inject TurnManager turnManager;
     @Inject GameState gameState;
+    @Inject Pane parent;
 
     @FXML private Button foodBuy, foodSell;
     @FXML private Button energyBuy, energySell;
@@ -37,9 +40,11 @@ public class StorePresenter implements Presenter{
         // Bind player resources.
         bindPlayerResources(turnManager.getCurrentPlayer());
         turnManager.getCurrentPlayerProp().addListener((obs, oldPlayer, newPlayer) -> {
+            unbindPlayerResources(oldPlayer);
             bindPlayerResources(newPlayer);
         });
 
+        // Bind the buy/sell buttons event handlers.
         foodBuy.setOnMouseClicked(e -> store.sellFood(turnManager.getCurrentPlayer()));
         foodSell.setOnMouseClicked(e -> store.buyFood(turnManager.getCurrentPlayer()));
         energyBuy.setOnMouseClicked(e -> store.sellEnergy(turnManager.getCurrentPlayer()));
@@ -50,6 +55,9 @@ public class StorePresenter implements Presenter{
         energyMule.setOnMouseClicked(e -> store.sellMule(turnManager.getCurrentPlayer(), MuleType.ENERGY));
         oreMule.setOnMouseClicked(e -> store.sellMule(turnManager.getCurrentPlayer(), MuleType.ORE));
         muleSell.setOnMouseClicked(e -> store.buyMule(turnManager.getCurrentPlayer()));
+
+        // Bind Exit button event handler.
+        exitButton.setOnMouseClicked(e -> parent.getChildren().clear());
     }
 
     private void bindPlayerResources(Player player) {
@@ -57,5 +65,13 @@ public class StorePresenter implements Presenter{
         energySell.textProperty().bindBidirectional(player.getEnergyProp(), new NumberStringConverter());
         oreSell.textProperty().bindBidirectional(player.getOreProp(), new NumberStringConverter());
         muleSell.textProperty().bindBidirectional(player.getMuleProp(), new MuleStringConverter());
+    }
+
+    private void unbindPlayerResources(Player player) {
+        if (player == null) return;
+        foodSell.textProperty().unbindBidirectional(player.getFoodProp());
+        energySell.textProperty().unbindBidirectional(player.getEnergyProp());
+        oreSell.textProperty().unbindBidirectional(player.getOreProp());
+        muleSell.textProperty().unbindBidirectional(player.getMuleProp());
     }
 }

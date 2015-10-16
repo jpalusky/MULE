@@ -15,6 +15,7 @@ import mule.world.town.store.StoreView;
 import mvp.Presenter;
 
 import javax.inject.Inject;
+import java.util.HashMap;
 
 
 public class TownPresenter implements Presenter {
@@ -108,7 +109,9 @@ public class TownPresenter implements Presenter {
                 case NONE:  break;
 
                 case STORE:
-                    FXMLView store = new StoreView();
+                    HashMap<String, Object> ic = new HashMap<>(1);
+                    ic.put("parent", menuContainer);
+                    FXMLView store = new StoreView(ic::get);
                     store.getViewAsync(menuContainer.getChildren()::add);
                     break;
 
