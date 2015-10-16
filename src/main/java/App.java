@@ -5,8 +5,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import mule.configscreen.ConfigScreenView;
 
-import java.util.HashMap;
-
 /**
  * This is the main application entry point for the Mule Game.
  *
@@ -15,9 +13,6 @@ import java.util.HashMap;
 public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        HashMap<Class, Object> context = new HashMap<>();
-        context.put(stage.getClass(), stage);
-
         Injector.setModelOrService(stage.getClass(), stage);
 
         stage.setTitle("M.U.L.E");

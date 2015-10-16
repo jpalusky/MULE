@@ -14,7 +14,9 @@ import mule.KeyHandler;
 import mule.configscreen.playerselect.PlayerSelectPresenter;
 import mule.configscreen.playerselect.PlayerSelectView;
 import mule.mainscreen.MainScreenView;
+import mule.player.Color;
 import mule.player.Player;
+import mule.player.Race;
 import mule.world.map.MapType;
 import mvp.Presenter;
 import mvp.Validateable;
@@ -40,8 +42,6 @@ public class ConfigScreenPresenter implements Presenter, Validateable {
 
     @FXML private Button addPlayerButton;
     @FXML private Button removePlayerButton;
-
-    @FXML private Button doneButton;
 
     private int numPlayers;
 
@@ -119,5 +119,23 @@ public class ConfigScreenPresenter implements Presenter, Validateable {
                 primaryStage.setScene(scene);
             });
         }
+    }
+
+    @FXML
+    public void skip() {
+        Player[] players = {
+                new Player("Player 1", Color.BLUE, Race.HUMAN),
+                new Player("Player 2", Color.RED, Race.BONZOID),
+        };
+        Difficulty d = Difficulty.STANDARD;
+        players[0].setDefaultResources(d);
+        players[1].setDefaultResources(d);
+        GameState gameState = new GameState(players, d, MapType.STANDARD);
+        Injector.setModelOrService(gameState.getClass(), gameState);
+        new MainScreenView().getViewAsync(view -> {
+            Scene scene = new Scene(view);
+            scene.addEventHandler(EventType.ROOT, keyHandler::handle);
+            primaryStage.setScene(scene);
+        });
     }
 }

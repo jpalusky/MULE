@@ -76,7 +76,6 @@ public class MapPresenter implements Presenter {
             Player player = turnManager.getCurrentPlayer();
 
             if (player != null) {
-                // TODO: detect town instead of using hardcoded coordinates.
                 if (player.getMapLocation().equals(new Point(4, 2))) {
                     player.enterTown();
                     mainScreen.showTown();
