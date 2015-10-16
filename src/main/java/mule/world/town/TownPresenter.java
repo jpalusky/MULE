@@ -191,6 +191,7 @@ public class TownPresenter implements Presenter {
     public void resetPlayer() {
         player.setX(450);
         player.setY(125);
+        menuContainer.getChildren().clear();
     }
 
     public void bindInput() {

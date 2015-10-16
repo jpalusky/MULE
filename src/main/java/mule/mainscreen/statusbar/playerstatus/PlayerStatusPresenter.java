@@ -3,12 +3,13 @@ package mule.mainscreen.statusbar.playerstatus;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import javafx.util.converter.NumberStringConverter;
+import mule.MuleType.MuleStringConverter;
 import mule.player.Player;
 import mvp.Presenter;
 
 import javax.inject.Inject;
 
-public class PlayerStatusPresenter implements Presenter{
+public class PlayerStatusPresenter implements Presenter {
     @Inject private Player player;
 
     @FXML private Text playerName;
@@ -16,6 +17,7 @@ public class PlayerStatusPresenter implements Presenter{
     @FXML private Text food;
     @FXML private Text energy;
     @FXML private Text ore;
+    @FXML private Text mule;
 
     @Override
     public void initialize() {
@@ -30,5 +32,7 @@ public class PlayerStatusPresenter implements Presenter{
                 new NumberStringConverter());
         ore.textProperty().bindBidirectional(player.getOreProp(),
                 new NumberStringConverter());
+        mule.textProperty().bindBidirectional(player.getMuleProp(),
+                new MuleStringConverter());
     }
 }
