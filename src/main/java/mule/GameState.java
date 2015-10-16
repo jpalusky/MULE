@@ -36,6 +36,10 @@ public class GameState {
         return mapType;
     }
 
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
     @Override
     public String toString() {
         return String.format("Difficulty: %s\n, Map type: %s\n Players: %s\n",

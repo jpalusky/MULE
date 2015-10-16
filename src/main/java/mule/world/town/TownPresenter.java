@@ -1,14 +1,17 @@
 package mule.world.town;
 
+import com.airhacks.afterburner.views.FXMLView;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import mule.KeyHandler;
 import mule.TurnManager;
 import mule.mainscreen.MainScreen;
 import mule.player.Player;
+import mule.world.town.store.StoreView;
 import mvp.Presenter;
 
 import javax.inject.Inject;
@@ -20,6 +23,7 @@ public class TownPresenter implements Presenter {
     @Inject private MainScreen mainScreen;
 
     @FXML private ImageView player;
+    @FXML private Pane menuContainer;
 
     private Image image;
 
@@ -34,18 +38,14 @@ public class TownPresenter implements Presenter {
     final static int ASSAY = 3;
     final static int LAND = 4;
 
-    //Constructor
-    Building pub;
+    private Building pub, store;
     int[] roundBonus;
-
-    //Variables
-    double timeLeft;   //these 2 need to pass in
-    int round;
 
     @FXML
     public void initialize() {
         roundBonus = new int[]{50,50,50,100,100,100,100,150,150,150,150,200};
         pub = new Building("Pub", 0, 150, 200, 400);
+        store = new Building("Store", 225, 450, 250, 500);
         player.setFocusTraversable(true);
     }
 
@@ -107,21 +107,21 @@ public class TownPresenter implements Presenter {
 
                 case NONE:  break;
 
+                case STORE:
+                    FXMLView store = new StoreView();
+                    store.getViewAsync(menuContainer.getChildren()::add);
+                    break;
+
                 default:    break;
             }
         }
     }
 
     private int checkLocation(double positionX, double positionY) {
-        //if player is at a pub
-        if(positionX > pub.getxMin() && positionX < pub.getxMax()
-                && positionY > pub.getyMin() && positionY < pub.getyMax()) {
-            return PUB;
-        }
-        //more location in here!!
-        else {
-            return NONE;
-        }
+        if (pub.in(positionX, positionY)) return PUB;
+        if (store.in(positionX, positionY)) return STORE;
+
+        return NONE;
     }
 
     private void switchStepsAtRight() {
@@ -168,8 +168,8 @@ public class TownPresenter implements Presenter {
 
     private void gamble() {
         Player currentPlayer = turnManager.getCurrentPlayer();
-        timeLeft = turnManager.getTimeLeft();
-        round = turnManager.getRoundNumber();
+        double timeLeft = turnManager.getTimeLeft();
+        int round = turnManager.getRoundNumber();
         int moneyBonus = (int)(roundBonus[round] * timeLeft);
         //do stuff with the moneyBonus
         currentPlayer.addMoney(moneyBonus);

@@ -3,6 +3,7 @@ package mule.player;
 import com.airhacks.afterburner.injection.Injector;
 import javafx.beans.property.*;
 import mule.Difficulty;
+import mule.MuleType;
 import mule.world.map.Point;
 import mule.world.map.tile.Tile;
 
@@ -23,6 +24,7 @@ public class Player {
     private final IntegerProperty food;
     private final IntegerProperty energy;
     private final IntegerProperty ore;
+    private final ObjectProperty<MuleType> mule;
 
     private boolean inTown;
 
@@ -41,6 +43,7 @@ public class Player {
         food = new SimpleIntegerProperty();
         energy = new SimpleIntegerProperty();
         ore = new SimpleIntegerProperty();
+        mule = new SimpleObjectProperty<>(MuleType.NONE);
         mapLocation = new SimpleObjectProperty<>(new Point(0, 0));
         properties = new HashSet<>();
         Injector.injectMembers(getClass(), this);
@@ -75,6 +78,10 @@ public class Player {
 
     public IntegerProperty getOreProp() {
         return ore;
+    }
+
+    public ObjectProperty getMuleProp() {
+        return mule;
     }
 
     /**
@@ -185,6 +192,48 @@ public class Player {
             Point p = mapLocation.get();
             mapLocation.set(new Point(Math.min(8, p.x + 1), p.y));
         }
+    }
+
+    public boolean buyFood(int cost, int amount) {
+        if (money.get() < cost*amount) return false;
+        if (food.get() < -amount) return false;
+        money.set(money.get() - cost*amount);
+        food.set(food.get() + amount);
+        return true;
+    }
+
+    public boolean buyEnergy(int cost, int amount) {
+        if (money.get() < cost*amount) return false;
+        if (energy.get() < -amount) return false;
+        money.set(money.get() - cost*amount);
+        energy.set(energy.get() + amount);
+        return true;
+    }
+
+    public boolean buyOre(int cost, int amount) {
+        if (money.get() < cost*amount) return false;
+        if (ore.get() < -amount) return false;
+        money.set(money.get() - cost*amount);
+        ore.set(ore.get() + amount);
+        return true;
+    }
+
+    public boolean buyMule(int cost, MuleType muleType) {
+        if (mule.get() != MuleType.NONE) return false;
+
+        int totalCost = cost + muleType.getCost();
+        if (money.get() < totalCost) return false;
+
+        money.set(money.get() - totalCost);
+        mule.set(muleType);
+        return true;
+    }
+
+    public boolean sellMule(int cost) {
+        if (mule.get() == MuleType.NONE) return false;
+        mule.set(MuleType.NONE);
+        money.set(money.get() + cost);
+        return true;
     }
 
     @Override

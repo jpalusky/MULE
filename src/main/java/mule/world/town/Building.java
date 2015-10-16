@@ -34,9 +34,11 @@ public class Building {
         return this.yMax;
     }
 
+    public boolean in(double x, double y) {
+        return x > xMin && x < xMax && y > yMin && y < yMax;
+    }
+
     public String getName() {
         return this.name;
     }
-
-
 }
