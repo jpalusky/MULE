@@ -52,19 +52,17 @@ public class TurnManager extends AnimationTimer {
             currentPlayer.set(players.remove());
 
             doProduction();
+            RandomEvent event = RandomEvent.chooseEvent();
 
-            if (players.size() != gameState.getPlayers().length - 1) {
-                RandomEvent event = RandomEvent.chooseEvent();
-                if (event != null) {
-                    //Show dialog box
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Random Event");
-                    alert.setHeaderText(null);
-                    alert.setContentText(event.getDescription());
+            if (event != null && (players.size() != gameState.getPlayers().length - 1 || event.isGood())) {
+                //Show dialog box
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Random Event");
+                alert.setHeaderText(null);
+                alert.setContentText(event.getDescription());
 
-                    alert.show();
-                    event.runEvent(getCurrentPlayer(), getRoundNumber());
-                }
+                alert.show();
+                event.runEvent(getCurrentPlayer(), getRoundNumber());
             }
 
             if (currentPlayer.get().isInTown()) {
