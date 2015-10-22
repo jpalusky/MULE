@@ -24,7 +24,7 @@ public class Tile {
         this.type = new SimpleObjectProperty<>(type);
         owner = new SimpleObjectProperty<>();
         player = new SimpleObjectProperty<>();
-        mule = new SimpleObjectProperty<>();
+        mule = new SimpleObjectProperty<>(MuleType.NONE);
     }
 
     public TileType getTileType() {
@@ -68,8 +68,32 @@ public class Tile {
     }
 
     public void addMule(MuleType mule) {
-        // TODO: Implement this
-        System.out.println(mule);
         this.mule.set(mule);
+    }
+
+    public boolean hasMule() {
+        return mule.get() != MuleType.NONE;
+    }
+
+    public boolean produce() {
+        Player owner = this.owner.get();
+        if (owner == null) return false;
+        if (owner.getEnergy() < 1) return false;
+        if (!hasMule()) return false;
+
+        owner.addEnergy(-1);
+        TileType t = getTileType();
+        switch (mule.get()) {
+            case FOOD:
+                owner.addFood(t.getFoodProduction());
+                break;
+            case ORE:
+                owner.addOre(t.getOreProduction());
+                break;
+            default:
+                owner.addEnergy(t.getEnergyProduction());
+        }
+
+        return true;
     }
 }

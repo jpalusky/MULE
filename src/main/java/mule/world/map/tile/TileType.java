@@ -11,8 +11,8 @@ public enum TileType {
     MOUNTAIN3("Three Mountains", 1, 1, 4, 5),
     TOWN("Town", 0, 0, 0, 0);
 
-    private String label;
-    private int food, energy, ore, crystite;
+    private final String label;
+    private final int food, energy, ore, crystite;
 
     TileType(String label, int food, int energy, int ore, int crystite) {
         this.label = label;
