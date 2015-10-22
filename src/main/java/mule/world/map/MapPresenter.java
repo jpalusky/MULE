@@ -5,6 +5,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import mule.GameState;
 import mule.KeyHandler;
+import mule.MuleType;
 import mule.TurnManager;
 import mule.mainscreen.MainScreen;
 import mule.player.Player;
@@ -82,9 +83,26 @@ public class MapPresenter implements Presenter {
                 }
             }
         });
+
+        // Bind M to place mule.
+        keyHandler.bind(KeyCode.M, e -> placeMule(turnManager.getCurrentPlayer()));
     }
 
     public void unbindInput() {
-        keyHandler.unbind(KeyCode.ENTER);
+        keyHandler.unbind(KeyCode.ENTER, KeyCode.M);
+    }
+
+    private void placeMule(Player player) {
+        if (player == null) return;
+        if (player.getMule() == MuleType.NONE) return;
+
+        Tile tile = map.getTile(player.getMapLocation());
+
+        MuleType mule = player.getMule();
+        player.removeMule();
+
+        if (player.owns(tile)) {
+            tile.addMule(mule);
+        }
     }
 }

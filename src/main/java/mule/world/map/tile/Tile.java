@@ -2,6 +2,7 @@ package mule.world.map.tile;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import mule.MuleType;
 import mule.player.Player;
 
 /**
@@ -10,8 +11,8 @@ import mule.player.Player;
 public class Tile {
     private final ObjectProperty<TileType> type;
     private final ObjectProperty<Player> owner;
-    /** The players in the current tile. */
     private final ObjectProperty<Player> player;
+    private final ObjectProperty<MuleType> mule;
 
     // This is only here because the injector uses reflection
     // to instantiate the class with the empty constructor.
@@ -23,6 +24,7 @@ public class Tile {
         this.type = new SimpleObjectProperty<>(type);
         owner = new SimpleObjectProperty<>();
         player = new SimpleObjectProperty<>();
+        mule = new SimpleObjectProperty<>();
     }
 
     public TileType getTileType() {
@@ -59,5 +61,15 @@ public class Tile {
 
     public void removePlayer() {
         player.set(null);
+    }
+
+    public ObjectProperty<MuleType> getMuleProp() {
+        return mule;
+    }
+
+    public void addMule(MuleType mule) {
+        // TODO: Implement this
+        System.out.println(mule);
+        this.mule.set(mule);
     }
 }

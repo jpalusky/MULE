@@ -236,6 +236,14 @@ public class Player {
         return true;
     }
 
+    public void removeMule() {
+        mule.set(MuleType.NONE);
+    }
+
+    public MuleType getMule() {
+        return mule.get();
+    }
+
     @Override
     public String toString() {
         return name + " " + color + " " + race;
