@@ -5,6 +5,7 @@ import javafx.beans.property.*;
 import javafx.scene.control.Alert;
 import mule.mainscreen.MainScreen;
 import mule.player.Player;
+import mule.world.map.tile.Tile;
 
 import javax.inject.Inject;
 import java.util.Arrays;
@@ -49,6 +50,9 @@ public class TurnManager extends AnimationTimer {
         // Change players when their turn ends.
         if (now > endTime) {
             currentPlayer.set(players.remove());
+
+            doProduction();
+
             if (players.size() != gameState.getPlayers().length - 1) {
                 RandomEvent event = RandomEvent.chooseEvent();
                 if (event != null) {
@@ -58,7 +62,6 @@ public class TurnManager extends AnimationTimer {
                     alert.setHeaderText(null);
                     alert.setContentText(event.getDescription());
 
-//                    alert.showAndWait();
                     alert.show();
                     event.runEvent(getCurrentPlayer(), getRoundNumber());
                 }
@@ -129,6 +132,12 @@ public class TurnManager extends AnimationTimer {
 
     public void endTurn() {
         endTime = -Long.MIN_VALUE;
+    }
+
+    private void doProduction() {
+        Player player = currentPlayer.get();
+        if (player == null) return;
+        player.getProperties().stream().filter(Tile::hasMule).forEach(Tile::produce);
     }
 
     @Override

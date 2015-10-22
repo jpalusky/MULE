@@ -9,12 +9,12 @@ import java.util.function.Function;
 public enum RandomEvent {
     ALUMNI_PACKAGE((Player player) -> (Integer m) -> {
         //Add 3 food and 2 energy
-        player.getFoodProp().add(3);
-        player.getEnergyProp().add(2);
+        player.addFood(3);
+        player.addEnergy(2);
     }, "YOU JUST RECEIVED A PACKAGE FROM THE GT ALUMNI CONTAINING 3 FOOD AND 2 ENERGY UNITS."),
     WANDERING_STUDENT((Player player) -> (Integer m) -> {
         //Add 2 ore
-        player.getOreProp().add(2);
+        player.addOre(2);
     }, "A WANDERING TECH STUDENT REPAID YOUR HOSPITALITY BY LEAVING TWO BARS OF ORE."),
     MUSEUM_PURCHASE((Player player) -> (Integer m) -> {
         //Add 8 * m (from current round)

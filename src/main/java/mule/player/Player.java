@@ -237,6 +237,30 @@ public class Player {
         return true;
     }
 
+    public void removeMule() {
+        mule.set(MuleType.NONE);
+    }
+
+    public MuleType getMule() {
+        return mule.get();
+    }
+
+    public Set<Tile> getProperties() {
+        return properties;
+    }
+
+    public void addEnergy(int n) {
+        energy.set(Math.max(0, energy.get() + n));
+    }
+
+    public void addFood(int n) {
+        food.set(Math.max(0, food.get() + n));
+    }
+
+    public void addOre(int n) {
+        ore.set(Math.max(0, ore.get() + n));
+    }
+
     @Override
     public String toString() {
         return name + " " + color + " " + race;

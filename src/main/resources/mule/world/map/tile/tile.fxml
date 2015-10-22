@@ -2,9 +2,11 @@
 
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
 <Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onClick" prefHeight="100.0" prefWidth="100.0" styleClass="tile" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mule.world.map.tile.TilePresenter">
    <children>
       <Circle fx:id="playerCircle" fill="#1f93ff00" layoutX="50.0" layoutY="50.0" radius="22.0" stroke="TRANSPARENT" strokeType="INSIDE" />
       <Circle fx:id="ownerCircle" fill="#ffffff00" layoutX="88.0" layoutY="87.0" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="owner-circle" />
+      <Rectangle fx:id="muleRect" arcHeight="5.0" arcWidth="2.0" fill="#1f93ff00" height="10.0" stroke="TRANSPARENT" strokeType="INSIDE" width="10.0" />
    </children>
 </Pane>

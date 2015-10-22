@@ -36,6 +36,12 @@ public class KeyHandler {
         eventMap.remove(code);
     }
 
+    public void unbind(KeyCode... codes) {
+        for (KeyCode code : codes) {
+            unbind(code);
+        }
+    }
+
     public void unbindAll() {
         eventMap = new HashMap<>();
     }
