@@ -21,6 +21,7 @@ public class Player {
     private final ObjectProperty<Point> mapLocation;
 
     private final IntegerProperty money;
+
     private final IntegerProperty food;
     private final IntegerProperty energy;
     private final IntegerProperty ore;

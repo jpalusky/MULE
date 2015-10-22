@@ -2,6 +2,7 @@ package mule;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.*;
+import javafx.scene.control.Alert;
 import mule.mainscreen.MainScreen;
 import mule.player.Player;
 
@@ -48,6 +49,22 @@ public class TurnManager extends AnimationTimer {
         // Change players when their turn ends.
         if (now > endTime) {
             currentPlayer.set(players.remove());
+            this.stop();
+            RandomEvent event = RandomEvent.chooseEvent();
+            if (event != null) {
+                //Show dialog box
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Random Event");
+                alert.setHeaderText(null);
+                alert.setContentText(event.getDescription());
+
+                alert.showAndWait();
+                event.runEvent(getCurrentPlayer(), getRoundNumber());
+                this.start();
+            } else {
+                //Resume game
+                this.start();
+            }
 
             if (currentPlayer.get().isInTown()) {
                 mainScreen.showTown();
