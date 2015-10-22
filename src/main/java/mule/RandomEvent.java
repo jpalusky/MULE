@@ -66,7 +66,7 @@ public enum RandomEvent {
         if (random.nextInt(100) < 1000) {
             RandomEvent[] events = RandomEvent.values();
             int eventIndex = random.nextInt(events.length);
-            return events[0];
+            return events[eventIndex];
         } else {
             return null;
         }
