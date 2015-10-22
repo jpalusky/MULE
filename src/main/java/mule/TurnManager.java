@@ -27,6 +27,8 @@ public class TurnManager extends AnimationTimer {
     private DoubleProperty timeLeft;
     private ObjectProperty<Player> currentPlayer;
 
+    boolean alertActive;
+
     private Queue<Player> players;
 
     public TurnManager() {
@@ -34,6 +36,7 @@ public class TurnManager extends AnimationTimer {
         timeLeft = new SimpleDoubleProperty();
         currentPlayer = new SimpleObjectProperty<>();
         players = new PriorityQueue<>(4, (a, b) -> a.calcScore() - b.calcScore());
+        alertActive = false;
     }
 
     @Override
@@ -54,13 +57,17 @@ public class TurnManager extends AnimationTimer {
             doProduction();
             RandomEvent event = RandomEvent.chooseEvent();
 
-            if (event != null && (players.size() != gameState.getPlayers().length - 1 || event.isGood())) {
+            if (!alertActive && event != null && (players.size() != gameState.getPlayers().length - 1 || event.isGood())) {
                 //Show dialog box
+                alertActive = true;
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
                 alert.setTitle("Random Event");
                 alert.setHeaderText(null);
                 alert.setContentText(event.getDescription());
-
+                alert.setOnHidden(e -> {
+                    alertActive = false;
+                });
                 alert.show();
                 event.runEvent(getCurrentPlayer(), getRoundNumber());
             }
