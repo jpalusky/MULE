@@ -1,6 +1,7 @@
 package mule.configscreen;
 
 import com.airhacks.afterburner.injection.Injector;
+import javafx.event.ActionEvent;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -11,6 +12,7 @@ import javafx.stage.Stage;
 import mule.Difficulty;
 import mule.GameState;
 import mule.KeyHandler;
+import mule.configscreen.loadscreen.LoadScreenView;
 import mule.configscreen.playerselect.PlayerSelectPresenter;
 import mule.configscreen.playerselect.PlayerSelectView;
 import mule.mainscreen.MainScreenView;
@@ -136,6 +138,15 @@ public class ConfigScreenPresenter implements Presenter, Validateable {
             Scene scene = new Scene(view);
             scene.addEventHandler(EventType.ROOT, keyHandler::handle);
             primaryStage.setScene(scene);
+        });
+    }
+
+    public void load(ActionEvent actionEvent) {
+        new LoadScreenView().getViewAsync(view -> {
+            Scene scene = new Scene(view);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
         });
     }
 }

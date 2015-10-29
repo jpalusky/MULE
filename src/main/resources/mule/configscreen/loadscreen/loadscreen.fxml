@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mule.configscreen.loadscreen.LoadScreenPresenter">
+    <children>
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Load Game">
+            <font>
+                <Font size="26.0" />
+            </font>
+        </Text>
+        <TableView fx:id="gamesTableView">
+            <columns>
+                <TableColumn text="Game Number" prefWidth="200">
+                </TableColumn>
+                <TableColumn text="Date" prefWidth="200">
+                </TableColumn>
+                <TableColumn text="Round Number" prefWidth="200">
+                </TableColumn>
+            </columns>
+        </TableView>
+        <Button mnemonicParsing="false" onAction="#load" text="Load" />
+    </children>
+</VBox>

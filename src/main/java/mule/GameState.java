@@ -1,5 +1,6 @@
 package mule;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import mule.player.Player;
 import mule.world.map.MapType;
 
@@ -12,6 +13,8 @@ public class GameState {
     private Difficulty difficulty;
     private MapType mapType;
 
+    private SimpleIntegerProperty roundNumberProperty;
+
     private Player[] players;
 
     // Empty constructor for injector.
@@ -22,6 +25,7 @@ public class GameState {
         this.players = players;
         this.mapType = mapType;
         this.difficulty = difficulty;
+//        roundNumberProperty = new SimpleIntegerProperty(2);
     }
 
     public Player[] getPlayers() {

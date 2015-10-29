@@ -85,6 +85,10 @@ public class Player {
         return mule;
     }
 
+    public Race getRace() {
+        return this.race;
+    }
+
     /**
      * Remove a specified amount of money from the player's funds.
      *

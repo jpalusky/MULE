@@ -24,6 +24,10 @@ public class Map {
         }
     }
 
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
     public Tile getTile(Point p) {
         return getTile(p.x, p.y);
     }
