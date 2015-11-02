@@ -30,7 +30,11 @@ public class TurnManager extends AnimationTimer {
     private Queue<Player> players;
 
     public TurnManager() {
-        roundNumber = new SimpleIntegerProperty();
+        this(0);
+    }
+
+    public TurnManager(int roundNumber) {
+        this.roundNumber = new SimpleIntegerProperty(roundNumber);
         timeLeft = new SimpleDoubleProperty();
         currentPlayer = new SimpleObjectProperty<>();
         players = new PriorityQueue<>(4, (a, b) -> a.calcScore() - b.calcScore());

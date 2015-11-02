@@ -15,14 +15,14 @@
         </Text>
         <TableView fx:id="gamesTableView">
             <columns>
-                <TableColumn text="Game Number" prefWidth="200">
+                <TableColumn fx:id="gameNumberColumn" text="Game Number" prefWidth="200">
                 </TableColumn>
-                <TableColumn text="Date" prefWidth="200">
+                <TableColumn fx:id="gameDateColumn" text="Date" prefWidth="200">
                 </TableColumn>
-                <TableColumn text="Round Number" prefWidth="200">
+                <TableColumn fx:id="gameRoundNumberColumn" text="Round Number" prefWidth="200">
                 </TableColumn>
             </columns>
         </TableView>
-        <Button mnemonicParsing="false" onAction="#load" text="Load" />
+        <Button fx:id="loadButton" mnemonicParsing="false" onAction="#load" text="Load" />
     </children>
 </VBox>

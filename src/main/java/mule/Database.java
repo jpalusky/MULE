@@ -16,7 +16,8 @@ public class Database {
                 connection = DriverManager.getConnection("jdbc:sqlite:gamesaves.db");
             }
         } catch (Exception e) {
-            System.out.println("Error connection to DB");
+            e.printStackTrace();
+            System.out.println("Error connecting to DB");
         }
 
     }

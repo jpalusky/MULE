@@ -1,6 +1,7 @@
 package mule;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import mule.player.Player;
 import mule.world.map.MapType;
 
@@ -13,7 +14,9 @@ public class GameState {
     private Difficulty difficulty;
     private MapType mapType;
 
+    private SimpleIntegerProperty gameNumberProperty;
     private SimpleIntegerProperty roundNumberProperty;
+    private SimpleStringProperty dateProperty;
 
     private Player[] players;
 
@@ -25,11 +28,29 @@ public class GameState {
         this.players = players;
         this.mapType = mapType;
         this.difficulty = difficulty;
-//        roundNumberProperty = new SimpleIntegerProperty(2);
+        roundNumberProperty = new SimpleIntegerProperty(2);
+    }
+
+    //Used for the loading table view
+    public GameState(int gameNumber, String date, int roundNumber) {
+        this.gameNumberProperty = new SimpleIntegerProperty(gameNumber);
+        this.roundNumberProperty = new SimpleIntegerProperty(roundNumber);
+        this.dateProperty = new SimpleStringProperty(date);
     }
 
     public Player[] getPlayers() {
         return players;
+    }
+
+    public SimpleIntegerProperty getRoundNumberProperty() {
+        return this.roundNumberProperty;
+    }
+    public SimpleIntegerProperty getGameNumberProperty() {
+        return this.gameNumberProperty;
+    }
+
+    public SimpleStringProperty getDateProperty() {
+        return this.dateProperty;
     }
 
     public int getNumPlayers() {
