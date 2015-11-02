@@ -180,7 +180,7 @@ public class TownPresenter implements Presenter {
 
     private boolean isExit(double x1, double y1) {
         double x = x1;
-        double y = y1;
+//        double y = y1;
         boolean exit = false;
         if(x<0 || x>860) {
             exit = true;
