@@ -4,11 +4,14 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
+import com.airhacks.afterburner.injection.Injector;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
@@ -16,26 +19,31 @@ import mule.Database;
 import mule.Difficulty;
 import mule.GameState;
 import mule.TurnManager;
+import javafx.stage.Stage;
+import mule.*;
+import mule.mainscreen.MainScreenView;
 import mule.player.Player;
 import mule.world.map.Map;
 import mule.world.map.MapType;
 import mule.world.map.tile.TileType;
+import mule.world.map.Map;
 import mvp.Presenter;
-import mvp.Validateable;
 
 import javax.inject.Inject;
-import javax.swing.plaf.nimbus.State;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Observable;
 
 /**
- * Created by david on 10/29/2015.
+ * Presenter for the Loading screen.
+ *
+ * This is the screen where you can restore previously saved games.
  */
-public class LoadScreenPresenter implements Presenter, Validateable {
+public class LoadScreenPresenter implements Presenter {
     @Inject private GameState gameState;
     @Inject private Database database;
+    @Inject private Stage primaryStage;
+    @Inject private KeyHandler keyHandler;
 
     @FXML private Button loadButton;
     @FXML private TableView<GameState> gamesTableView;
@@ -77,11 +85,11 @@ public class LoadScreenPresenter implements Presenter, Validateable {
     public void load(ActionEvent actionEvent) {
         //get selected row id
 
-        if(!gamesTableView.getSelectionModel().isEmpty()) {
+        if (!gamesTableView.getSelectionModel().isEmpty()) {
             GameState selected = gamesTableView.getSelectionModel().getSelectedItem();
             System.out.println("selected: " + selected.getGameNumberProperty().toString());
 
-             Statement statement = database.getStatement();
+            Statement statement = database.getStatement();
             int gameId = selected.getGameNumberProperty().get();
 
             //TODO: use these values to do something
@@ -108,7 +116,6 @@ public class LoadScreenPresenter implements Presenter, Validateable {
                     TileType[][] tiles = new TileType[9][5];
 
 
-
                     Map map = new Map();
                     map.initialize(tiles);
 
@@ -123,8 +130,30 @@ public class LoadScreenPresenter implements Presenter, Validateable {
         } else {
             System.out.println("No selection.");
         }
+    }
 
 
+    /**
+     * Starts a new game from a previous state.
+     *
+     * @param gameState the loaded game's GameState.
+     * @param turnManager the loaded game's TurnManager
+     * @param map the loaded game's Map
+     */
+    private void startGame(GameState gameState, TurnManager turnManager, Map map) {
+        // Disable land selection phase.
+        LandSelectionManager lsMan = new LandSelectionManager();
+        lsMan.getInLandSelectionPhaseProp().set(false);
 
+        Injector.setModelOrService(gameState.getClass(), gameState);
+        Injector.setModelOrService(turnManager.getClass(), turnManager);
+        Injector.setModelOrService(map.getClass(), map);
+        Injector.setModelOrService(lsMan.getClass(), lsMan);
+
+        new MainScreenView().getViewAsync(view -> {
+            Scene scene = new Scene(view);
+            scene.addEventHandler(EventType.ROOT, keyHandler::handle);
+            primaryStage.setScene(scene);
+        });
     }
 }
