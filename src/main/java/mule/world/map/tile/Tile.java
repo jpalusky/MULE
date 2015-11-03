@@ -4,6 +4,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import mule.MuleType;
 import mule.player.Player;
+import mule.world.map.Point;
 
 /**
  * A tile on the map.
@@ -14,17 +15,20 @@ public class Tile {
     private final ObjectProperty<Player> player;
     private final ObjectProperty<MuleType> mule;
 
+    private final Point location;
+
     // This is only here because the injector uses reflection
     // to instantiate the class with the empty constructor.
     public Tile() {
-        this(TileType.PLAIN);
+        this(TileType.PLAIN, 0, 0);
     }
 
-    public Tile(TileType type) {
+    public Tile(TileType type, int x, int y) {
         this.type = new SimpleObjectProperty<>(type);
         owner = new SimpleObjectProperty<>();
         player = new SimpleObjectProperty<>();
         mule = new SimpleObjectProperty<>(MuleType.NONE);
+        location = new Point(x, y);
     }
 
     public TileType getTileType() {
@@ -95,5 +99,9 @@ public class Tile {
         }
 
         return true;
+    }
+
+    public Point getLocation() {
+        return location;
     }
 }
