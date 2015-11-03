@@ -21,6 +21,10 @@
                 </TableColumn>
                 <TableColumn fx:id="gameRoundNumberColumn" text="Round Number" prefWidth="200">
                 </TableColumn>
+                <TableColumn fx:id="difficultyColumn" text="Round Number" prefWidth="200">
+                </TableColumn>
+                <TableColumn fx:id="mapTypeColumn" text="Round Number" prefWidth="200">
+                </TableColumn>
             </columns>
         </TableView>
         <Button fx:id="loadButton" mnemonicParsing="false" onAction="#load" text="Load" />

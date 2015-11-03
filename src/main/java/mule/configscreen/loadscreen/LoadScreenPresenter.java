@@ -27,6 +27,7 @@ import mule.player.Player;
 import mule.player.Race;
 import mule.world.map.Map;
 import mule.world.map.MapType;
+import mule.world.map.tile.Tile;
 import mule.world.map.tile.TileType;
 import mule.world.map.Map;
 import mule.world.town.store.Store;
@@ -53,8 +54,8 @@ public class LoadScreenPresenter implements Presenter {
     @FXML private TableColumn<GameState, Integer> gameNumberColumn;
     @FXML private TableColumn<GameState, String> gameDateColumn;
     @FXML private TableColumn<GameState, Integer> gameRoundNumberColumn;
-    @FXML private TableColumn<GameState, String> difficultyColumn;
-    @FXML private TableColumn<GameState, String> mapTypeColumn;
+    @FXML private TableColumn<GameState, Integer> difficultyColumn;
+    @FXML private TableColumn<GameState, Integer> mapTypeColumn;
 
     @Override
     public void initialize() {
@@ -67,8 +68,8 @@ public class LoadScreenPresenter implements Presenter {
         gameNumberColumn.setCellValueFactory(c -> c.getValue().getGameNumberProperty().asObject());
         gameDateColumn.setCellValueFactory(c -> c.getValue().getDateProperty());
         gameRoundNumberColumn.setCellValueFactory(c -> c.getValue().getRoundNumberProperty().asObject());
-        difficultyColumn.setCellValueFactory(c -> c.getValue().getDifficultyProperty());
-        mapTypeColumn.setCellValueFactory(c -> c.getValue().getMapTypeProperty());
+        difficultyColumn.setCellValueFactory(c -> c.getValue().getDifficultyProperty().asObject());
+        mapTypeColumn.setCellValueFactory(c -> c.getValue().getMapTypeProperty().asObject());
         System.out.println(database);
     }
 
@@ -105,10 +106,32 @@ public class LoadScreenPresenter implements Presenter {
                     ResultSet count = statement.executeQuery(String.format("SELECT COUNT(*) FROM player WHERE game_id=%d", gameId));
                     Player players[] = new Player[count.getInt("COUNT(*)")];
 
+
+                    //Load map
+                    String sql = String.format("SELECT * FROM map_tile WHERE game_id=%d", gameId);
+                    ResultSet mapRs = statement.executeQuery(sql);
+
+                    TileType[][] tiles = new TileType[9][5];
+                    TileType[] values = TileType.values();
+
+                    while (mapRs.next()) {
+                        int x = mapRs.getInt("x");
+                        int y = mapRs.getInt("y");
+
+                        tiles[y][x] = values[mapRs.getInt("type")];
+                    }
+
+                    Map map = new Map();
+                    map.initialize(tiles);
+
+                    Tile[][] mapTiles = map.getTiles();
+
+
                     //Load player
                     ResultSet playersRs = statement.executeQuery(String.format("SELECT * FROM player WHERE game_id=%d", gameId));
                     int i = 0;
                     while (playersRs.next()) {
+                        int id = playersRs.getInt("id");
                         Player newPlayer = new Player(
                                 playersRs.getString("name"),
                                 Color.values()[playersRs.getInt("color_id")],
@@ -119,38 +142,34 @@ public class LoadScreenPresenter implements Presenter {
                                 playersRs.getInt("ore")
                         );
                         players[i] = newPlayer;
+
+                        sql = String.format("SELECT * FROM player_tile WHERE player_id=%d", id);
+                        ResultSet playerMapRs = statement.executeQuery(sql);
+                        while (playerMapRs.next()) {
+                            int x = playerMapRs.getInt("x");
+                            int y = playerMapRs.getInt("y");
+                            mapTiles[y][x].getMuleProp().set(MuleType.values()[playerMapRs.getInt("mule_type")]);
+                            mapTiles[y][x].setOwner(newPlayer);
+                            newPlayer.getProperties().add(mapTiles[y][x]);
+
+                        }
+
                     }
                     playersRs.close();
+                    map.setTiles(mapTiles);
 
                     //Load game state
                     TurnManager turnManager = new TurnManager(roundNumber);
                     GameState newGameState = new GameState(players, Difficulty.values()[diffIndex], MapType.values()[mapIndex]);
 
                     //Load store
-                    String sql = String.format("SELECT * FROM store WHERE game_id=%d", gameId);
+                    sql = String.format("SELECT * FROM store WHERE game_id=%d", gameId);
                     ResultSet storeRs = statement.executeQuery(sql);
                     Store store = new Store(storeRs.getInt("food"), storeRs.getInt("energy"), storeRs.getInt("ore"), storeRs.getInt("mule"));
 
 
-                    //Load map
-                    sql = String.format("SELECT * FROM map_tile WHERE game_id=%d", gameId);
-                    ResultSet mapRs = statement.executeQuery(sql);
 
-                    TileType[][] tiles = new TileType[9][5];
-                    TileType[] values = TileType.values();
-
-                    while (mapRs.next()) {
-                        int x = mapRs.getInt("x");
-                        int y = mapRs.getInt("y");
-
-
-                        tiles[y][x] = values[mapRs.getInt("type")];
-                    }
-
-                    Map map = new Map();
-                    map.initialize(tiles);
-
-                    this.startGame(newGameState, turnManager, map);
+                    this.startGame(newGameState, turnManager, map, store);
                 } else {
                     System.out.println("No matching game found.");
                 }
@@ -174,6 +193,8 @@ public class LoadScreenPresenter implements Presenter {
      * @param store the Store model
      */
     private void startGame(GameState gameState, TurnManager turnManager, Map map, Store store) {
+        System.out.println("CALLED");
+
         // Disable land selection phase.
         LandSelectionManager lsMan = new LandSelectionManager();
         lsMan.getInLandSelectionPhaseProp().set(false);

@@ -28,6 +28,10 @@ public class Map {
         return tiles;
     }
 
+    public void setTiles(Tile[][] tiles) {
+        this.tiles = tiles;
+    }
+
     public Tile getTile(Point p) {
         return getTile(p.x, p.y);
     }

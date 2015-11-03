@@ -22,6 +22,13 @@ public class Store {
         mule = new SimpleIntegerProperty(25);
     }
 
+    public Store(int food, int energy, int ore, int mule) {
+        this.food = new SimpleIntegerProperty(food);
+        this.energy = new SimpleIntegerProperty(energy);
+        this.ore = new SimpleIntegerProperty(ore);
+        this.mule = new SimpleIntegerProperty(mule);
+    }
+
     public void configureDefaults(Difficulty d) {
         if (configured) return;
         food = new SimpleIntegerProperty(d.getStoreFood());

@@ -15,6 +15,7 @@ import mule.mainscreen.statusbar.playerstatus.PlayerStatusView;
 import mule.player.Player;
 import mule.world.map.Map;
 import mule.world.map.tile.Tile;
+import mule.world.town.store.Store;
 import mvp.Presenter;
 
 import javax.inject.Inject;
@@ -28,6 +29,7 @@ public class StatusBarPresenter implements Presenter {
     @Inject private TurnManager turnManager;
     @Inject private Database database;
     @Inject private Map map;
+    @Inject Store store;
 
     // Info for land selection phase.
     @FXML private Node lsBox;
@@ -89,7 +91,7 @@ public class StatusBarPresenter implements Presenter {
         Statement statement = database.getStatement();
         try {
             //Save game
-            statement.execute("INSERT INTO game_data (round_number) VALUES (" + turnManager.getRoundNumber() + ")");
+            statement.execute(String.format("INSERT INTO game_data (round_number, difficulty, map_type) VALUES (%d, %d, %d)", turnManager.getRoundNumber(), gameState.getDifficulty().ordinal(), gameState.getMapType().ordinal()));
 
             int gameId = database.getMaxID(statement, "game_data");
 
@@ -112,25 +114,28 @@ public class StatusBarPresenter implements Presenter {
                 statement.execute(sql);
 
                 int playerId = database.getMaxID(statement, "player");
-
                 for (Tile tile : player.getProperties()) {
-//                    sql = String.format("INSERT INTO player_tile (player_id, mule_type, number) VALUES (%d, %d, %d)", playerId, tile.getMuleProp().get().ordinal());
-//                    statement.execute(sql);
+                    sql = String.format("INSERT INTO player_tile (x, y, player_id, mule_type) VALUES (%d, %d, %d, %d)", tile.getLocation().x, tile.getLocation().y, playerId, tile.getMuleProp().get().ordinal());
+                    statement.execute(sql);
                 }
-
             }
-//
-//            Tile tiles[][] = map.getTiles();
-//            for (int i = 0; i < tiles.length; i++) {
-//                for (int j = 0; j < tiles[0].length; j++) {
-//                    int playerId = -1;
-//                    if (tiles[i][j].getPlayerProp().get() != null) {
-//
-//                    }
-//                    String sql = String.format("INSERT INTO tile (player_id, mule_type, number) VALUES (%d, %d, %d)", playerId, tiles[i][j].getMuleProp().get().ordinal(), i + j);
-//                    statement.execute(sql);
-//                }
-//            }
+
+            //Save tiles (no player data)
+            Tile tiles[][] = map.getTiles();
+            for (int i = 0; i < tiles.length; i++) {
+                for (int j = 0; j < tiles[0].length; j++) {
+                    Tile tile = tiles[i][j];
+
+                    String sql = String.format("INSERT INTO map_tile (game_id, type, x, y) VALUES (%d, %d, %d, %d)", gameId, tile.getTileType().ordinal(), i, j);
+                    statement.execute(sql);
+                }
+            }
+
+            //Save store
+            String sql = String.format("INSERT INTO store (game_id, food, energy, ore, mule) VALUES (%d, %d, %d, %d, %d)",
+                    gameId, store.getFoodProp().get(), store.getEnergyProp().get(), store.getOreProp().get(), store.getMuleProp().get());
+            statement.execute(sql);
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
