@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
     compile 'com.airhacks:afterburner.fx:1.6.2'
+    compile 'org.xerial:sqlite-jdbc:3.8.11'
     testCompile 'junit:junit:4.12'
 }
 
