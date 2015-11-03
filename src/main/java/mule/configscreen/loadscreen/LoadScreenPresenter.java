@@ -65,11 +65,6 @@ public class LoadScreenPresenter implements Presenter {
         System.out.println(database);
     }
 
-    @Override
-    public boolean isValid() {
-        return false;
-    }
-
     public void addGamesFromDatabase(ObservableList<GameState> games) {
         Statement statement = database.getStatement();
         try {
