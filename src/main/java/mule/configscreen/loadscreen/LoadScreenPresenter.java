@@ -22,11 +22,14 @@ import mule.TurnManager;
 import javafx.stage.Stage;
 import mule.*;
 import mule.mainscreen.MainScreenView;
+import mule.player.Color;
 import mule.player.Player;
+import mule.player.Race;
 import mule.world.map.Map;
 import mule.world.map.MapType;
 import mule.world.map.tile.TileType;
 import mule.world.map.Map;
+import mule.world.town.store.Store;
 import mvp.Presenter;
 
 import javax.inject.Inject;
@@ -50,24 +53,23 @@ public class LoadScreenPresenter implements Presenter {
     @FXML private TableColumn<GameState, Integer> gameNumberColumn;
     @FXML private TableColumn<GameState, String> gameDateColumn;
     @FXML private TableColumn<GameState, Integer> gameRoundNumberColumn;
+    @FXML private TableColumn<GameState, String> difficultyColumn;
+    @FXML private TableColumn<GameState, String> mapTypeColumn;
 
     @Override
     public void initialize() {
         ObservableList<GameState> games = gamesTableView.getItems();
 
-        loadButton.disableProperty().bind(Bindings.size(gamesTableView.getSelectionModel().getSelectedItems()).greaterThan(0));
+        loadButton.disableProperty().bind(Bindings.size(gamesTableView.getSelectionModel().getSelectedItems()).lessThan(1));
         //query database
         addGamesFromDatabase(games);
 
         gameNumberColumn.setCellValueFactory(c -> c.getValue().getGameNumberProperty().asObject());
         gameDateColumn.setCellValueFactory(c -> c.getValue().getDateProperty());
         gameRoundNumberColumn.setCellValueFactory(c -> c.getValue().getRoundNumberProperty().asObject());
+        difficultyColumn.setCellValueFactory(c -> c.getValue().getDifficultyProperty());
+        mapTypeColumn.setCellValueFactory(c -> c.getValue().getMapTypeProperty());
         System.out.println(database);
-    }
-
-    @Override
-    public boolean isValid() {
-        return false;
     }
 
     public void addGamesFromDatabase(ObservableList<GameState> games) {
@@ -75,7 +77,7 @@ public class LoadScreenPresenter implements Presenter {
         try {
             ResultSet rs = statement.executeQuery("SELECT * FROM game_data");
             while(rs.next()) {
-                games.add(new GameState(rs.getInt("id"), rs.getString("date"), rs.getInt("round_number")));
+                games.add(new GameState(rs.getInt("id"), rs.getString("date"), rs.getInt("round_number"), rs.getInt("difficulty"), rs.getInt("map_type")));
             }
         } catch (SQLException e) {
             System.out.printf("Could not load game list.");
@@ -95,36 +97,66 @@ public class LoadScreenPresenter implements Presenter {
             //TODO: use these values to do something
             try {
                 ResultSet game = statement.executeQuery(String.format("SELECT * FROM game_data WHERE id=%d", gameId));
+                int diffIndex = game.getInt("difficulty");
+                int mapIndex = game.getInt("map_type");
+                int roundNumber = game.getInt("round_number");
                 if (game.next()) {
-                    int roundNumber = game.getInt("round_number");
-
-                    ResultSet playersRs = statement.executeQuery(String.format("SELECT * FROM player WHERE game_id=%d", gameId));
+                    System.out.println("Game found");
                     ResultSet count = statement.executeQuery(String.format("SELECT COUNT(*) FROM player WHERE game_id=%d", gameId));
-                    Player players[] = new Player[count.getInt(0)];
+                    Player players[] = new Player[count.getInt("COUNT(*)")];
 
+                    //Load player
+                    ResultSet playersRs = statement.executeQuery(String.format("SELECT * FROM player WHERE game_id=%d", gameId));
                     int i = 0;
                     while (playersRs.next()) {
-                        Player newPlayer = new Player();
-                        newPlayer.getNameProp().setValue(playersRs.getString("name"));
+                        Player newPlayer = new Player(
+                                playersRs.getString("name"),
+                                Color.values()[playersRs.getInt("color_id")],
+                                Race.values()[playersRs.getInt("race_id")],
+                                playersRs.getInt("money"),
+                                playersRs.getInt("food"),
+                                playersRs.getInt("energy"),
+                                playersRs.getInt("ore")
+                        );
                         players[i] = newPlayer;
                     }
+                    playersRs.close();
 
-                    int diffIndex = 0;
-                    int mapIndex = 0;
+                    //Load game state
                     TurnManager turnManager = new TurnManager(roundNumber);
                     GameState newGameState = new GameState(players, Difficulty.values()[diffIndex], MapType.values()[mapIndex]);
-                    TileType[][] tiles = new TileType[9][5];
 
+                    //Load store
+                    String sql = String.format("SELECT * FROM store WHERE game_id=%d", gameId);
+                    ResultSet storeRs = statement.executeQuery(sql);
+                    Store store = new Store(storeRs.getInt("food"), storeRs.getInt("energy"), storeRs.getInt("ore"), storeRs.getInt("mule"));
+
+
+                    //Load map
+                    sql = String.format("SELECT * FROM map_tile WHERE game_id=%d", gameId);
+                    ResultSet mapRs = statement.executeQuery(sql);
+
+                    TileType[][] tiles = new TileType[9][5];
+                    TileType[] values = TileType.values();
+
+                    while (mapRs.next()) {
+                        int x = mapRs.getInt("x");
+                        int y = mapRs.getInt("y");
+
+
+                        tiles[y][x] = values[mapRs.getInt("type")];
+                    }
 
                     Map map = new Map();
                     map.initialize(tiles);
 
-//                    this.startGame(newGameState, turnManager, map);
+                    this.startGame(newGameState, turnManager, map);
                 } else {
                     System.out.println("No matching game found.");
                 }
             } catch (SQLException e) {
                 System.out.println("Unable to load game");
+                e.printStackTrace();
             }
 
         } else {
