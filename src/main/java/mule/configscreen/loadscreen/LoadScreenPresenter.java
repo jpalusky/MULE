@@ -171,8 +171,9 @@ public class LoadScreenPresenter implements Presenter {
      * @param gameState the loaded game's GameState.
      * @param turnManager the loaded game's TurnManager
      * @param map the loaded game's Map
+     * @param store the Store model
      */
-    private void startGame(GameState gameState, TurnManager turnManager, Map map) {
+    private void startGame(GameState gameState, TurnManager turnManager, Map map, Store store) {
         // Disable land selection phase.
         LandSelectionManager lsMan = new LandSelectionManager();
         lsMan.getInLandSelectionPhaseProp().set(false);
@@ -181,6 +182,7 @@ public class LoadScreenPresenter implements Presenter {
         Injector.setModelOrService(turnManager.getClass(), turnManager);
         Injector.setModelOrService(map.getClass(), map);
         Injector.setModelOrService(lsMan.getClass(), lsMan);
+        Injector.setModelOrService(store.getClass(), store);
 
         new MainScreenView().getViewAsync(view -> {
             Scene scene = new Scene(view);
