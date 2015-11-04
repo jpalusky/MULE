@@ -43,8 +43,8 @@ public class LoadScreenPresenter implements Presenter {
     @FXML private TableColumn<GameState, Integer> gameNumberColumn;
     @FXML private TableColumn<GameState, String> gameDateColumn;
     @FXML private TableColumn<GameState, Integer> gameRoundNumberColumn;
-    @FXML private TableColumn<GameState, Integer> difficultyColumn;
-    @FXML private TableColumn<GameState, Integer> mapTypeColumn;
+    @FXML private TableColumn<GameState, String> difficultyColumn;
+    @FXML private TableColumn<GameState, String> mapTypeColumn;
 
     @Override
     public void initialize() {
@@ -57,8 +57,8 @@ public class LoadScreenPresenter implements Presenter {
         gameNumberColumn.setCellValueFactory(c -> c.getValue().getGameNumberProperty().asObject());
         gameDateColumn.setCellValueFactory(c -> c.getValue().getDateProperty());
         gameRoundNumberColumn.setCellValueFactory(c -> c.getValue().getRoundNumberProperty().asObject());
-        difficultyColumn.setCellValueFactory(c -> c.getValue().getDifficultyProperty().asObject());
-        mapTypeColumn.setCellValueFactory(c -> c.getValue().getMapTypeProperty().asObject());
+        difficultyColumn.setCellValueFactory(c -> c.getValue().getDifficultyProperty());
+        mapTypeColumn.setCellValueFactory(c -> c.getValue().getMapTypeProperty());
         System.out.println(database);
     }
 
@@ -197,6 +197,7 @@ public class LoadScreenPresenter implements Presenter {
         Injector.injectMembers(turnManager.getClass(), turnManager);
 
         new MainScreenView().getViewAsync(view -> {
+            gamesTableView.getScene().getWindow().hide();
             Scene scene = new Scene(view);
             scene.addEventHandler(EventType.ROOT, keyHandler::handle);
             primaryStage.setScene(scene);

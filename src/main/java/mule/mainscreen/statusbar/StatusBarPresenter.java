@@ -41,6 +41,7 @@ public class StatusBarPresenter implements Presenter {
     @FXML private Node turnBox;
     @FXML private Text timeLeftText;
     @FXML private Text turnCurrentPlayer;
+//    @FXML private Text currentRound;
 
     @Override
     public void initialize() {
@@ -83,6 +84,17 @@ public class StatusBarPresenter implements Presenter {
                         return null;
                     }
                 });
+//        currentRound.textProperty().bindBidirectional(turnManager.getRoundNumberProp(), new StringConverter<Number>() {
+//            @Override
+//            public String toString(Number object) {
+//                return object.toString();
+//            }
+//
+//            @Override
+//            public Number fromString(String string) {
+//                return null;
+//            }
+//        });
         System.out.println(turnCurrentPlayer);
     }
 

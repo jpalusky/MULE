@@ -16,8 +16,8 @@ public class GameState {
 
     private SimpleIntegerProperty gameNumberProperty;
     private SimpleIntegerProperty roundNumberProperty;
-    private SimpleIntegerProperty difficultyProperty;
-    private SimpleIntegerProperty mapTypeProperty;
+    private SimpleStringProperty difficultyProperty;
+    private SimpleStringProperty mapTypeProperty;
     private SimpleStringProperty dateProperty;
 
     private Player[] players;
@@ -31,8 +31,8 @@ public class GameState {
         this.mapType = mapType;
         this.difficulty = difficulty;
         roundNumberProperty = new SimpleIntegerProperty();
-        difficultyProperty = new SimpleIntegerProperty();
-        mapTypeProperty = new SimpleIntegerProperty();
+        difficultyProperty = new SimpleStringProperty();
+        mapTypeProperty = new SimpleStringProperty();
         gameNumberProperty = new SimpleIntegerProperty();
         dateProperty = new SimpleStringProperty();
     }
@@ -42,19 +42,19 @@ public class GameState {
         this.gameNumberProperty = new SimpleIntegerProperty(gameNumber);
         this.roundNumberProperty = new SimpleIntegerProperty(roundNumber);
         this.dateProperty = new SimpleStringProperty(date);
-        this.difficultyProperty = new SimpleIntegerProperty(difficulty);
-        this.mapTypeProperty = new SimpleIntegerProperty(mapType);
+        this.difficultyProperty = new SimpleStringProperty(Difficulty.values()[difficulty].toString());
+        this.mapTypeProperty = new SimpleStringProperty(MapType.values()[mapType].toString());
     }
 
     public Player[] getPlayers() {
         return players;
     }
 
-    public SimpleIntegerProperty getMapTypeProperty() {
+    public SimpleStringProperty getMapTypeProperty() {
         return this.mapTypeProperty;
     }
 
-    public SimpleIntegerProperty getDifficultyProperty() {
+    public SimpleStringProperty getDifficultyProperty() {
         return this.difficultyProperty;
     }
     public SimpleIntegerProperty getRoundNumberProperty() {

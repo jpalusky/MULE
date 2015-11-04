@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mule.configscreen.loadscreen.LoadScreenPresenter">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="555.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mule.configscreen.loadscreen.LoadScreenPresenter">
     <children>
         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Load Game">
             <font>
@@ -13,15 +13,15 @@
         </Text>
         <TableView fx:id="gamesTableView">
             <columns>
-                <TableColumn fx:id="gameNumberColumn" text="Game Number" prefWidth="200">
+                <TableColumn fx:id="gameNumberColumn" text="Game Number" prefWidth="100">
                 </TableColumn>
-                <TableColumn fx:id="gameDateColumn" text="Date" prefWidth="200">
+                <TableColumn fx:id="gameDateColumn" text="Date" prefWidth="150">
                 </TableColumn>
-                <TableColumn fx:id="gameRoundNumberColumn" text="Round Number" prefWidth="200">
+                <TableColumn fx:id="gameRoundNumberColumn" text="Round Number" prefWidth="100">
                 </TableColumn>
-                <TableColumn fx:id="difficultyColumn" text="Round Number" prefWidth="200">
+                <TableColumn fx:id="difficultyColumn" text="Difficulty" prefWidth="100">
                 </TableColumn>
-                <TableColumn fx:id="mapTypeColumn" text="Round Number" prefWidth="200">
+                <TableColumn fx:id="mapTypeColumn" text="Map Type" prefWidth="100">
                 </TableColumn>
             </columns>
         </TableView>

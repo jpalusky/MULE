@@ -50,6 +50,14 @@
                   <Insets left="5.0" right="5.0" />
                </FlowPane.margin>
             </Label>
+            <!--<Label contentDisplay="BOTTOM" text="Current Round:">-->
+               <!--<graphic>-->
+                  <!--<Text fx:id="currentRound" strokeType="OUTSIDE" strokeWidth="0.0" text="Placeholder" />-->
+               <!--</graphic>-->
+               <!--<FlowPane.margin>-->
+                  <!--<Insets left="5.0" right="5.0" />-->
+               <!--</FlowPane.margin>-->
+            <!--</Label>-->
             <Button mnemonicParsing="false" onAction="#save" text="Save" />
          </children>
       </FlowPane>
