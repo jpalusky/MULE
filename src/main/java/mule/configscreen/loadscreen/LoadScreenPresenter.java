@@ -1,24 +1,15 @@
 package mule.configscreen.loadscreen;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import com.airhacks.afterburner.injection.Injector;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
-import javafx.scene.Scene;
 import javafx.scene.control.TableView;
-import javafx.scene.text.Text;
-import javafx.util.Callback;
-import mule.Database;
-import mule.Difficulty;
-import mule.GameState;
-import mule.TurnManager;
 import javafx.stage.Stage;
 import mule.*;
 import mule.mainscreen.MainScreenView;
@@ -29,7 +20,6 @@ import mule.world.map.Map;
 import mule.world.map.MapType;
 import mule.world.map.tile.Tile;
 import mule.world.map.tile.TileType;
-import mule.world.map.Map;
 import mule.world.town.store.Store;
 import mvp.Presenter;
 
@@ -44,7 +34,6 @@ import java.sql.Statement;
  * This is the screen where you can restore previously saved games.
  */
 public class LoadScreenPresenter implements Presenter {
-    @Inject private GameState gameState;
     @Inject private Database database;
     @Inject private Stage primaryStage;
     @Inject private KeyHandler keyHandler;
@@ -111,7 +100,7 @@ public class LoadScreenPresenter implements Presenter {
                     String sql = String.format("SELECT * FROM map_tile WHERE game_id=%d", gameId);
                     ResultSet mapRs = statement.executeQuery(sql);
 
-                    TileType[][] tiles = new TileType[9][5];
+                    TileType[][] tiles = new TileType[5][9];
                     TileType[] values = TileType.values();
 
                     while (mapRs.next()) {
@@ -125,7 +114,6 @@ public class LoadScreenPresenter implements Presenter {
                     map.initialize(tiles);
 
                     Tile[][] mapTiles = map.getTiles();
-
 
                     //Load player
                     ResultSet playersRs = statement.executeQuery(String.format("SELECT * FROM player WHERE game_id=%d", gameId));
@@ -141,7 +129,7 @@ public class LoadScreenPresenter implements Presenter {
                                 playersRs.getInt("energy"),
                                 playersRs.getInt("ore")
                         );
-                        players[i] = newPlayer;
+                        players[i++] = newPlayer;
 
                         sql = String.format("SELECT * FROM player_tile WHERE player_id=%d", id);
                         ResultSet playerMapRs = statement.executeQuery(sql);
@@ -150,11 +138,10 @@ public class LoadScreenPresenter implements Presenter {
                             int y = playerMapRs.getInt("y");
                             mapTiles[y][x].getMuleProp().set(MuleType.values()[playerMapRs.getInt("mule_type")]);
                             mapTiles[y][x].setOwner(newPlayer);
-                            newPlayer.getProperties().add(mapTiles[y][x]);
-
+                            newPlayer.addProperty(mapTiles[y][x]);
                         }
-
                     }
+
                     playersRs.close();
                     map.setTiles(mapTiles);
 
@@ -167,9 +154,7 @@ public class LoadScreenPresenter implements Presenter {
                     ResultSet storeRs = statement.executeQuery(sql);
                     Store store = new Store(storeRs.getInt("food"), storeRs.getInt("energy"), storeRs.getInt("ore"), storeRs.getInt("mule"));
 
-
-
-                    this.startGame(newGameState, turnManager, map, store);
+                    startGame(newGameState, turnManager, map, store);
                 } else {
                     System.out.println("No matching game found.");
                 }
@@ -193,22 +178,24 @@ public class LoadScreenPresenter implements Presenter {
      * @param store the Store model
      */
     private void startGame(GameState gameState, TurnManager turnManager, Map map, Store store) {
-        System.out.println("CALLED");
+        Injector.setModelOrService(gameState.getClass(), gameState);
 
         // Disable land selection phase.
-        LandSelectionManager lsMan = new LandSelectionManager();
+        LandSelectionManager lsMan = Injector.instantiateModelOrService(LandSelectionManager.class);
         lsMan.getInLandSelectionPhaseProp().set(false);
 
-        Injector.setModelOrService(gameState.getClass(), gameState);
-        Injector.setModelOrService(turnManager.getClass(), turnManager);
         Injector.setModelOrService(map.getClass(), map);
-        Injector.setModelOrService(lsMan.getClass(), lsMan);
         Injector.setModelOrService(store.getClass(), store);
+        Injector.setModelOrService(turnManager.getClass(), turnManager);
+
+        Injector.injectMembers(turnManager.getClass(), turnManager);
 
         new MainScreenView().getViewAsync(view -> {
+            System.out.println("TEST");
             Scene scene = new Scene(view);
             scene.addEventHandler(EventType.ROOT, keyHandler::handle);
             primaryStage.setScene(scene);
+            turnManager.start();
         });
     }
 }

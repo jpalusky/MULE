@@ -15,9 +15,6 @@ public class GameState {
     private MapType mapType;
 
     private SimpleIntegerProperty gameNumberProperty;
-
-
-
     private SimpleIntegerProperty roundNumberProperty;
     private SimpleIntegerProperty difficultyProperty;
     private SimpleIntegerProperty mapTypeProperty;
@@ -33,7 +30,11 @@ public class GameState {
         this.players = players;
         this.mapType = mapType;
         this.difficulty = difficulty;
-        roundNumberProperty = new SimpleIntegerProperty(2);
+        roundNumberProperty = new SimpleIntegerProperty();
+        difficultyProperty = new SimpleIntegerProperty();
+        mapTypeProperty = new SimpleIntegerProperty();
+        gameNumberProperty = new SimpleIntegerProperty();
+        dateProperty = new SimpleStringProperty();
     }
 
     //Used for the loading table view

@@ -126,7 +126,7 @@ public class StatusBarPresenter implements Presenter {
                 for (int j = 0; j < tiles[0].length; j++) {
                     Tile tile = tiles[i][j];
 
-                    String sql = String.format("INSERT INTO map_tile (game_id, type, x, y) VALUES (%d, %d, %d, %d)", gameId, tile.getTileType().ordinal(), i, j);
+                    String sql = String.format("INSERT INTO map_tile (game_id, type, x, y) VALUES (%d, %d, %d, %d)", gameId, tile.getTileType().ordinal(), j, i);
                     statement.execute(sql);
                 }
             }
