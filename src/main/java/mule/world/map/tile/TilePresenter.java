@@ -32,6 +32,10 @@ public class TilePresenter implements Presenter {
         tile.getOwnerProp().addListener((obs, oldOwner, owner) -> {
             ownerCircle.setFill(owner.getColor().getColor());
         });
+        // Set owner circle initially
+        if (tile.getOwner() != null) {
+            ownerCircle.setFill(tile.getOwner().getColor().getColor());
+        }
 
         tile.getPlayerProp().addListener((obs, oldPlayer, currPlayer) -> {
             playerCircle.setFill(currPlayer != null ?
@@ -54,6 +58,23 @@ public class TilePresenter implements Presenter {
                     break;
             }
         });
+        // Set mule initially.
+        if (tile.hasMule()) {
+            switch(tile.getMuleProp().get()) {
+                case FOOD:
+                    muleRect.setFill(Color.rgb(100, 50, 0));
+                    break;
+                case ENERGY:
+                    muleRect.setFill(Color.LIGHTBLUE);
+                    break;
+                case ORE:
+                    muleRect.setFill(Color.GREY);
+                    break;
+                default:
+                    muleRect.setFill(Color.TRANSPARENT);
+                    break;
+            }
+        }
     }
 
     public void onClick() {
