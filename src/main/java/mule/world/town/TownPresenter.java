@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import mule.KeyHandler;
 import mule.TurnManager;
@@ -29,7 +28,7 @@ public class TownPresenter implements Presenter {
     private Image image;
 
     //constant variables
-    final static int STEPS = 10;
+    final static int STEP_SIZE = 10;
     final static int MAX_BONUS = 250;
     boolean steps = true;
     //constant int for location
@@ -40,7 +39,7 @@ public class TownPresenter implements Presenter {
     final static int LAND = 4;
 
     private Building pub, store;
-    int[] roundBonus;
+    private int[] roundBonus;
 
     @FXML
     public void initialize() {
@@ -48,76 +47,6 @@ public class TownPresenter implements Presenter {
         pub = new Building("Pub", 0, 150, 200, 400);
         store = new Building("Store", 225, 450, 250, 500);
         player.setFocusTraversable(true);
-    }
-
-    @FXML
-    public void move(KeyEvent event) {
-        double positionX = player.getX();
-        double positionY = player.getY();
-        //move up
-        if (event.getCode() == KeyCode.UP) {
-            switchStepsAtRight();   //temporary
-            if(!isblocked(positionX, positionY-STEPS)) {
-                player.setY(positionY - STEPS);
-            }
-            if(isExit(positionX, positionY-STEPS)) {
-                turnManager.getCurrentPlayer().exitTown();
-                mainScreen.showMap();
-            }
-        }
-        //move down
-        if (event.getCode() == KeyCode.DOWN) {
-            switchStepsAtLeft();    //temporary
-            if(!isblocked(positionX, positionY+STEPS)) {
-                player.setY(positionY + STEPS);
-            }
-            if(isExit(positionX, positionY+STEPS)) {
-                turnManager.getCurrentPlayer().exitTown();
-                mainScreen.showMap();
-            }
-        }
-        //move left
-        if (event.getCode() == KeyCode.LEFT) {
-            switchStepsAtLeft();    //walking left animation
-            if(!isblocked(positionX-STEPS, positionY)) {
-                player.setX(positionX - STEPS);
-            }
-            if(isExit(positionX-STEPS, positionY)) {
-                turnManager.getCurrentPlayer().exitTown();
-                mainScreen.showMap();
-            }
-        }
-        //move right
-        if (event.getCode() == KeyCode.RIGHT) {
-            switchStepsAtRight();   //walking right animation
-            if(!isblocked(positionX+STEPS, positionY)) {
-                player.setX(positionX + STEPS);
-            }
-            if(isExit(positionX+STEPS, positionY)) {
-                turnManager.getCurrentPlayer().exitTown();
-                mainScreen.showMap();
-            }
-        }
-
-        //interact
-        if (event.getCode() == KeyCode.ENTER) {
-            //check player location before interact
-            switch(checkLocation(positionX,positionY)) {
-                case PUB:   pubInteraction();
-                            break;
-
-                case NONE:  break;
-
-                case STORE:
-                    HashMap<String, Object> ic = new HashMap<>(1);
-                    ic.put("parent", menuContainer);
-                    FXMLView store = new StoreView(ic::get);
-                    store.getViewAsync(menuContainer.getChildren()::add);
-                    break;
-
-                default:    break;
-            }
-        }
     }
 
     private int checkLocation(double positionX, double positionY) {
@@ -151,22 +80,35 @@ public class TownPresenter implements Presenter {
         player.setImage(image);
     }
 
-    private boolean isblocked(double x1, double y1) {
-        double x = x1;
-        double y = y1;
-        boolean blocked = false;
-        if((y>250 && ((x>0 && x<20) || (x>145 && x<245) || (x>360 && x<460) || (x>585 && x<685)
-                || (x>820))) || y>400 || y<0) {
-            blocked = true;
-        }
-        return blocked;
+    private boolean isblocked(double x, double y) {
+        return y>250 && (x>0 && x<20 || x>145 && x<245 || x>360 && x<460 || x>585 && x<685
+                || x>820) || y>400 || y<0;
     }
 
     private void pubInteraction() {
         gamble();
-        //then end turn
         turnManager.endTurn();
-        
+    }
+
+    private void storeInteraction() {
+        HashMap<String, Object> ic = new HashMap<>(1);
+        ic.put("parent", menuContainer);
+        FXMLView store = new StoreView(ic::get);
+        store.getViewAsync(menuContainer.getChildren()::add);
+    }
+
+    private void buildingInteract() {
+        switch (checkLocation(player.getX(), player.getY())) {
+            case PUB:
+                pubInteraction();
+                break;
+
+            case STORE:
+                storeInteraction();
+                break;
+
+            default: break;
+        }
     }
 
     private void gamble() {
@@ -194,16 +136,44 @@ public class TownPresenter implements Presenter {
         menuContainer.getChildren().clear();
     }
 
+    private void movePlayer(int x, int y) {
+        if (x > 0 || y > 0) {
+            switchStepsAtRight();
+        } else {
+            switchStepsAtLeft();
+        }
+
+        if (!isblocked(player.getX() + x, player.getY() + y)) {
+            player.setX(player.getX() + x);
+            player.setY(player.getY() + y);
+        }
+        if (isExit(player.getX() + x, player.getY() + y)) {
+            turnManager.getCurrentPlayer().exitTown();
+            mainScreen.showMap();
+        }
+    }
+
     public void bindInput() {
         // Press X to exit town.
         keyHandler.bind(KeyCode.X, e -> {
             turnManager.getCurrentPlayer().exitTown();
             mainScreen.showMap();
         });
+
+        // Bind movement keys.
+        keyHandler.bind(KeyCode.UP, e -> movePlayer(0, -STEP_SIZE));
+        keyHandler.bind(KeyCode.DOWN, e -> movePlayer(0, STEP_SIZE));
+        keyHandler.bind(KeyCode.LEFT, e -> movePlayer(-STEP_SIZE, 0));
+        keyHandler.bind(KeyCode.RIGHT, e -> movePlayer(STEP_SIZE, 0));
+
+        // Bind enter for building interaction
+        keyHandler.bind(KeyCode.ENTER, e -> buildingInteract());
     }
 
+
     public void unbindInput() {
-        keyHandler.unbind(KeyCode.X);
+        keyHandler.unbind(KeyCode.X, KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT,
+                KeyCode.RIGHT, KeyCode.ENTER);
     }
 }
 

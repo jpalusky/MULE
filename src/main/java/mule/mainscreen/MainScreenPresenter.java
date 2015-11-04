@@ -1,12 +1,10 @@
 package mule.mainscreen;
 
 import javafx.fxml.FXML;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import mule.KeyHandler;
 import mule.LandSelectionManager;
 import mule.TurnManager;
-import mule.player.Player;
 import mule.world.map.MapView;
 import mule.world.town.TownView;
 import mvp.Presenter;
@@ -36,18 +34,5 @@ public class MainScreenPresenter implements Presenter {
         landSelectionManager.getInLandSelectionPhaseProp().addListener((obs, old, newValue) -> {
             if (!newValue) turnManager.start();
         });
-
-        turnManager.getCurrentPlayerProp().addListener((obs, oldPlayer, currentPlayer) -> {
-            if (currentPlayer != null) {
-                bindMovementKeys(currentPlayer);
-            }
-        });
-    }
-
-    private void bindMovementKeys(Player p) {
-        keyHandler.bind(KeyCode.RIGHT, e -> p.moveRight());
-        keyHandler.bind(KeyCode.LEFT, e -> p.moveLeft());
-        keyHandler.bind(KeyCode.DOWN, e -> p.moveDown());
-        keyHandler.bind(KeyCode.UP, e -> p.moveUp());
     }
 }

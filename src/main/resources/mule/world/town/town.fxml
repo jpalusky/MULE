@@ -60,7 +60,7 @@
       </GridPane>
       <Pane prefHeight="500.0" prefWidth="900.0">
          <children>
-            <ImageView fx:id="player" fitHeight="50.0" fitWidth="50.0" focusTraversable="true" onKeyPressed="#move" pickOnBounds="true" preserveRatio="true" x="275.0" y="50.0">
+            <ImageView fx:id="player" fitHeight="50.0" fitWidth="50.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true" x="275.0" y="50.0">
                <image>
                   <Image url="@human.png" />
                </image>

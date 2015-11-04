@@ -19,7 +19,6 @@ import mule.world.town.store.Store;
 import mvp.Presenter;
 
 import javax.inject.Inject;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 

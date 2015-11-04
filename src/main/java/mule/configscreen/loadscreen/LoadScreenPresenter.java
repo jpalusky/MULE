@@ -24,7 +24,6 @@ import mule.world.town.store.Store;
 import mvp.Presenter;
 
 import javax.inject.Inject;
-import javax.swing.plaf.nimbus.State;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;

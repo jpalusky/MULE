@@ -86,10 +86,16 @@ public class MapPresenter implements Presenter {
 
         // Bind M to place mule.
         keyHandler.bind(KeyCode.M, e -> placeMule(turnManager.getCurrentPlayer()));
+
+        // Bind movement
+        keyHandler.bind(KeyCode.RIGHT, e -> turnManager.getCurrentPlayer().moveRight());
+        keyHandler.bind(KeyCode.LEFT, e -> turnManager.getCurrentPlayer().moveLeft());
+        keyHandler.bind(KeyCode.DOWN, e -> turnManager.getCurrentPlayer().moveDown());
+        keyHandler.bind(KeyCode.UP, e -> turnManager.getCurrentPlayer().moveUp());
     }
 
     public void unbindInput() {
-        keyHandler.unbind(KeyCode.ENTER, KeyCode.M);
+        keyHandler.unbind(KeyCode.ENTER, KeyCode.M, KeyCode.UP, KeyCode.DOWN, KeyCode.RIGHT, KeyCode.LEFT);
     }
 
     private void placeMule(Player player) {
