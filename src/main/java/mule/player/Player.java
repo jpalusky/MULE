@@ -50,6 +50,21 @@ public class Player {
         Injector.injectMembers(getClass(), this);
     }
 
+    public Player(String name, Color colorId, Race raceId, int money, int food, int energy, int ore) {
+        this.name = new SimpleStringProperty(name);
+        this.color = colorId;
+        this.race = raceId;
+        this.money = new SimpleIntegerProperty(money);
+        this.food = new SimpleIntegerProperty(food);
+        this.energy = new SimpleIntegerProperty(energy);
+        this.ore = new SimpleIntegerProperty(ore);
+
+        mule = new SimpleObjectProperty<>(MuleType.NONE);
+        mapLocation = new SimpleObjectProperty<>(new Point(0, 0));
+        properties = new HashSet<>();
+        Injector.injectMembers(getClass(), this);
+    }
+
     /**
      * Configure the default resources of the player based on the difficulty.
      *
@@ -83,6 +98,10 @@ public class Player {
 
     public ObjectProperty getMuleProp() {
         return mule;
+    }
+
+    public Race getRace() {
+        return this.race;
     }
 
     /**

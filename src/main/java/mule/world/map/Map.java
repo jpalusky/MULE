@@ -17,11 +17,19 @@ public class Map {
             tiles = new Tile[map.length][map[0].length];
             for (int i = 0; i < map.length; ++i) {
                 for (int j = 0; j < map[i].length; ++j) {
-                    tiles[i][j] = new Tile(map[i][j]);
+                    tiles[i][j] = new Tile(map[i][j], j, i);
                 }
             }
             initialized = true;
         }
+    }
+
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
+    public void setTiles(Tile[][] tiles) {
+        this.tiles = tiles;
     }
 
     public Tile getTile(Point p) {
