@@ -24,6 +24,7 @@ import mule.world.town.store.Store;
 import mvp.Presenter;
 
 import javax.inject.Inject;
+import javax.swing.plaf.nimbus.State;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -86,6 +87,7 @@ public class LoadScreenPresenter implements Presenter {
 
             //TODO: use these values to do something
             try {
+
                 ResultSet game = statement.executeQuery(String.format("SELECT * FROM game_data WHERE id=%d", gameId));
                 int diffIndex = game.getInt("difficulty");
                 int mapIndex = game.getInt("map_type");
@@ -93,7 +95,8 @@ public class LoadScreenPresenter implements Presenter {
                 if (game.next()) {
                     System.out.println("Game found");
                     ResultSet count = statement.executeQuery(String.format("SELECT COUNT(*) FROM player WHERE game_id=%d", gameId));
-                    Player players[] = new Player[count.getInt("COUNT(*)")];
+                    int numPlayers = count.getInt("COUNT(*)");
+                    Player players[] = new Player[numPlayers];
 
 
                     //Load map
@@ -117,6 +120,10 @@ public class LoadScreenPresenter implements Presenter {
 
                     //Load player
                     ResultSet playersRs = statement.executeQuery(String.format("SELECT * FROM player WHERE game_id=%d", gameId));
+//                    while (playersRs.next()) {
+//                        System.out.println("PLAYER: " + playersRs.getString("name"));
+//                    }
+                    Statement mapStmt = database.getStatement();
                     int i = 0;
                     while (playersRs.next()) {
                         int id = playersRs.getInt("id");
@@ -132,7 +139,7 @@ public class LoadScreenPresenter implements Presenter {
                         players[i++] = newPlayer;
 
                         sql = String.format("SELECT * FROM player_tile WHERE player_id=%d", id);
-                        ResultSet playerMapRs = statement.executeQuery(sql);
+                        ResultSet playerMapRs = mapStmt.executeQuery(sql);
                         while (playerMapRs.next()) {
                             int x = playerMapRs.getInt("x");
                             int y = playerMapRs.getInt("y");
@@ -191,7 +198,6 @@ public class LoadScreenPresenter implements Presenter {
         Injector.injectMembers(turnManager.getClass(), turnManager);
 
         new MainScreenView().getViewAsync(view -> {
-            System.out.println("TEST");
             Scene scene = new Scene(view);
             scene.addEventHandler(EventType.ROOT, keyHandler::handle);
             primaryStage.setScene(scene);
